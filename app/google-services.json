@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "187649046984",
+    "firebase_url": "https://betayair-3d4fd.firebaseio.com",
+    "project_id": "betayair-3d4fd",
+    "storage_bucket": "betayair-3d4fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187649046984:android:6153d6575eaeabb315e8fd",
+        "android_client_info": {
+          "package_name": "com.example.finalebeta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187649046984-sn50cnlldjapml924s6q0pmmt3n0b2h7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.finalebeta",
+            "certificate_hash": "81bfd63980c269aa0f56878f03cd9090ab8e0c73"
+          }
+        },
+        {
+          "client_id": "187649046984-aia6qpsmkp23vpme39823kkp4o8usrtm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0DwpSqCjdUROc7-tNjKVpgapLJ9WFvzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187649046984-aia6qpsmkp23vpme39823kkp4o8usrtm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
