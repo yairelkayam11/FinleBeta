@@ -23,9 +23,17 @@
         android:textStyle="italic"
         android:text="Create your own event..." />
 
+    <EditText
+        android:id="@+id/ETname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Event Name :" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="47dp"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -37,6 +45,13 @@
         android:ems="10"
         android:hint="Place :"
         android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,14 +79,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="21dp"
         android:orientation="vertical">
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="201dp"
+        android:layout_height="51dp"
         android:orientation="horizontal">
 
         <TextView
@@ -87,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="" />
+
     </LinearLayout>
 
     <EditText
@@ -95,7 +111,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Password :"
-        android:inputType="textPassword" />
+        android:inputType="number" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="188dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn"
@@ -104,5 +127,12 @@
         android:layout_gravity="center"
         android:onClick="CreateEV"
         android:text="Create" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 </LinearLayout>

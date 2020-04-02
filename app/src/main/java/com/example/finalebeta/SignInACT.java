@@ -61,19 +61,17 @@ public class SignInACT extends AppCompatActivity {
         regoption();
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
-        Intent si = new Intent(SignInACT.this,AddEventACT.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
-            startActivity(si);
         }
     }
 
-     */
+
 
     @Override
     protected void onPause() {
@@ -91,13 +89,32 @@ public class SignInACT extends AppCompatActivity {
                 eTphone.setVisibility(View.VISIBLE);
                 btn.setText("Register");
                 registered=false;
-//                logoption();
+                 logoption();
             }
         };
         ss.setSpan(span, 24, 38, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tVregister.setText(ss);
         tVregister.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    private void logoption() {
+        SpannableString ss = new SpannableString("Already have an account?  Login here!");
+        ClickableSpan span = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                tVtitle.setText("Login");
+                eTname.setVisibility(View.INVISIBLE);
+                eTphone.setVisibility(View.INVISIBLE);
+                btn.setText("Login");
+                registered=true;
+                regoption();
+            }
+        };
+        ss.setSpan(span, 26, 37, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tVregister.setText(ss);
+        tVregister.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
 
     public void logorreg(View view) {
         if (registered) {

@@ -19,23 +19,27 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.view.Event;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.Calendar;
+import java.util.Date;
 
-import static com.example.finalebeta.FBref.refEvent;
+import static com.example.finalebeta.FBref.refEvnts;
 
 public class CreateEvent extends AppCompatActivity {
 
     Button btn, TimeBtn, DateBtn;
-    EditText ETplace, ETepass;
+    EditText ETplace, ETepass,ETname;
     TextView TVD, TVT;
-    Event event;
-    String place, Epass, ID,time,date;
-    Boolean Active;
+    Evnts evnt;
+    String place, Epass,time,date,name;
     DatePickerDialog dpd;
     TimePickerDialog tpd;
     Calendar c;
+    Long count;
+    Long ID;
+    String t;
+    boolean Active = true;
+
 
 
     @Override
@@ -50,6 +54,7 @@ public class CreateEvent extends AppCompatActivity {
         ETplace = (EditText) findViewById(R.id.ETplace);
         DateBtn = (Button) findViewById(R.id.DateBtn);
         ETepass = (EditText) findViewById(R.id.ETepass);
+        ETname = (EditText) findViewById(R.id.ETname);
 
         DateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,52 +100,41 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
-
-        ValueEventListener listener = new ValueEventListener() {
+        ValueEventListener listener = new ValueEventListener()
+        {
 
             @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-
-                Long count = ds.getChildrenCount();
-
-                ID = count
+            public void onDataChange(@NonNull DataSnapshot ds)
+            {
+                count = ds.getChildrenCount();
+                count++;
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
 
             }
-
         };
-
-        refEvent.addValueEventListener(listener);
-
-
+        refEvnts.addValueEventListener(listener);
     }
 
 
-
-    public void CreateEv (View view) {
-
-
-
+    public void CreateEV (View view) {
 
         place = ETplace.getText().toString();
         Epass = ETepass.getText().toString();
+        name = ETname.getText().toString();
         date = TVD.getText().toString();
         time = TVT.getText().toString();
-
-
-         event = new Event(ID,place,date,time,Epass,Active);
-         refEvent.child(ID).setValue(event);
-
+        ID = count;
+        t = ID.toString();
 
 
 
-
+        evnt = new Evnts(ID,place,name,date,time,Epass,Active);
+        refEvnts.child(t).setValue(evnt);
     }
-
-
 
 
 
