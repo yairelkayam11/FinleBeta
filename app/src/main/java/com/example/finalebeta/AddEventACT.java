@@ -43,6 +43,8 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
 
         btn=(Button)findViewById(R.id.btn);
         lv = (ListView)findViewById(R.id.lv);
+        lv.setOnItemClickListener(this);
+        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
          ValueEventListener listener = new ValueEventListener() {
 
@@ -54,11 +56,12 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
                 for(DataSnapshot data : ds.getChildren()) {
 
                     Evnts dataTMP1 = data.getValue(Evnts.class);
+                    Values.add(dataTMP1);
                     IDlist.add(dataTMP1.getName());
                     dataa = dataTMP1;
                 }
 
-                adp = new ArrayAdapter<String>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
+                adp = new ArrayAdapter<>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
                 lv.setAdapter(adp);
 
 
@@ -70,11 +73,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             }
      };
 
-        refEvnts.addValueEventListener(listener);
-        lv.setOnItemClickListener((AdapterView.OnItemClickListener) this);
-        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-
+        refEvnts.child("Evnts").addValueEventListener(listener);
     }
 
 

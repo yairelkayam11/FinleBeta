@@ -1,17 +1,23 @@
 package com.example.finalebeta;
 
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+
 public class Evnts {
 
     private Long ID;
     private String place;
-    private String name;
+    private static String name;
     private String date;
     private String time;
     private String Epass;//event password
     private boolean Active;
+    ArrayList<UserOrder> UOarray = new ArrayList<UserOrder>();
+
 
     public Evnts(){}
-    public Evnts(Long ID, String place,String name , String date, String time, String Epass , boolean Active ) {
+    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active , ArrayList<UserOrder> UOarray) {
         this.ID = ID;
         this.time = time;
         this.name = name;
@@ -19,6 +25,8 @@ public class Evnts {
         this.place = place;
         this.Active = Active;
         this.Epass = Epass;
+        this.UOarray = UOarray;
+
     }
 
     public Long getID() {
@@ -61,7 +69,7 @@ public class Evnts {
             Epass = epass;
         }
 
-    public String getName() { return name;
+    public static String getName() { return name;
     }
 
     public void setName(String name) { this.name = name;
@@ -71,6 +79,28 @@ public class Evnts {
     }
 
     public void setActive(boolean active) { Active = active;
+    }
+
+    public ArrayList<UserOrder> getUOarray() {
+        return UOarray;
+    }
+
+    public void setUOarray(ArrayList<UserOrder> UOarray) {
+        this.UOarray = UOarray;
+    }
+
+
+    public  void CopyEvnts( Evnts Evnts){
+        this.ID = Evnts.getID();
+        this.time = Evnts.getTime();
+        this.name = Evnts.getName();
+        this.date = Evnts.getDate();
+        this.place = Evnts.getPlace();
+        this.Active = Evnts.isActive();
+        this.Epass = Evnts.getEpass();
+        this.UOarray = Evnts.getUOarray();
+
+
     }
 }
 

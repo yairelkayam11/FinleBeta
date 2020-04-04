@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.core.view.Event;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,14 +33,16 @@ public class CreateEvent extends AppCompatActivity {
     EditText ETplace, ETepass,ETname;
     TextView TVD, TVT;
     Evnts evnt;
-    String place, Epass,time,date,name;
+    String place, Epass,time,date;
+    public static String name;
     DatePickerDialog dpd;
     TimePickerDialog tpd;
     Calendar c;
     Long count;
-    Long ID;
-    String t;
+    Long IDD;
+   public static String t;
     boolean Active = true;
+    ArrayList<UserOrder> UOarray;
 
 
 
@@ -55,6 +59,7 @@ public class CreateEvent extends AppCompatActivity {
         DateBtn = (Button) findViewById(R.id.DateBtn);
         ETepass = (EditText) findViewById(R.id.ETepass);
         ETname = (EditText) findViewById(R.id.ETname);
+
 
         DateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,14 +132,19 @@ public class CreateEvent extends AppCompatActivity {
         name = ETname.getText().toString();
         date = TVD.getText().toString();
         time = TVT.getText().toString();
-        ID = count;
-        t = ID.toString();
+        IDD = count;
+        t = IDD.toString();
 
 
 
-        evnt = new Evnts(ID,place,name,date,time,Epass,Active);
+        evnt = new Evnts(IDD,place,name,date,time,Epass,Active,UOarray);
         refEvnts.child(t).setValue(evnt);
+
+        Intent go = new Intent(this , OrderAct.class);
+        startActivity(go);
     }
+
+
 
 
 
