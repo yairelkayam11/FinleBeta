@@ -74,6 +74,7 @@ public class DinerOrderAct extends AppCompatActivity {
 
                 DishPrice dp = new DishPrice(dish,price);
 
+
                 String str = dish + " - " +  price;
 
                 arrST.add(str);
