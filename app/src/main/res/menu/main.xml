@@ -13,9 +13,9 @@
         android:orderInCategory="200" />
 
     <item
-        android:id="@+id/menuStore"
-        android:title="Store"
-        android:orderInCategory="300" />
+        android:id="@+id/Credits"
+        android:title="Credits"
+        android:orderInCategory="300"/>
 
 
 </menu>

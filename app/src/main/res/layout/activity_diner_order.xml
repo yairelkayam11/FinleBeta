@@ -8,23 +8,30 @@
     tools:context=".DinerOrderAct">
 
 
-    <TextView
-        android:id="@+id/tv"
+    <EditText
+        android:id="@+id/ETname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="20dp" />
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Diner name :" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="13dp"
+        android:layout_height="37dp"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="apply"
+            android:text="Apply" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="29dp"
+        android:layout_height="11dp"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -103,7 +110,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <Button
@@ -196,7 +203,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="12dp"
         android:orientation="vertical">
 
     </LinearLayout>

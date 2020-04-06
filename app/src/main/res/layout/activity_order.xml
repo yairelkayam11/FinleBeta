@@ -32,12 +32,12 @@
             android:id="@+id/btn"
             android:layout_width="245dp"
             android:layout_height="match_parent"
-            android:onClick="AddDiner"
             android:layout_weight="1"
-            android:textSize="15dp"
+            android:onClick="AddDiner"
             android:text="Add your order
 
-+" />
++"
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/textView6"

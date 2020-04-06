@@ -8,16 +8,15 @@ public class Evnts {
 
     private Long ID;
     private String place;
-    private static String name;
+    private  String name;
     private String date;
     private String time;
     private String Epass;//event password
     private boolean Active;
-    ArrayList<UserOrder> UOarray = new ArrayList<UserOrder>();
+    ArrayList<UserOrder> ArrUO = new ArrayList<UserOrder>();
 
 
-    public Evnts(){}
-    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active , ArrayList<UserOrder> UOarray) {
+    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active) {
         this.ID = ID;
         this.time = time;
         this.name = name;
@@ -25,7 +24,12 @@ public class Evnts {
         this.place = place;
         this.Active = Active;
         this.Epass = Epass;
-        this.UOarray = UOarray;
+
+
+    }
+
+
+    public Evnts(ArrayList<UserOrder> ArrUO) {
 
     }
 
@@ -69,10 +73,12 @@ public class Evnts {
             Epass = epass;
         }
 
-    public static String getName() { return name;
+    public String getName() {
+        return name;
     }
 
-    public void setName(String name) { this.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isActive() { return Active;
@@ -81,16 +87,15 @@ public class Evnts {
     public void setActive(boolean active) { Active = active;
     }
 
-    public ArrayList<UserOrder> getUOarray() {
-        return UOarray;
+    public ArrayList<UserOrder> getArrUO() {
+        return ArrUO;
     }
 
-    public void setUOarray(ArrayList<UserOrder> UOarray) {
-        this.UOarray = UOarray;
+    public void setArrUO(ArrayList<UserOrder> arrUO) {
+        ArrUO = arrUO;
     }
 
-
-    public  void CopyEvnts( Evnts Evnts){
+    public  void CopyEvnts(Evnts Evnts){
         this.ID = Evnts.getID();
         this.time = Evnts.getTime();
         this.name = Evnts.getName();
@@ -98,9 +103,11 @@ public class Evnts {
         this.place = Evnts.getPlace();
         this.Active = Evnts.isActive();
         this.Epass = Evnts.getEpass();
-        this.UOarray = Evnts.getUOarray();
+        this.ArrUO = Evnts.getArrUO();
 
 
     }
+
+
 }
 

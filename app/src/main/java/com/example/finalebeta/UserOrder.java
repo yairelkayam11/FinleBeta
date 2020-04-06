@@ -9,15 +9,19 @@ public class UserOrder {
 
     public UserOrder(String name, DishPrice ArrDP){}
 
-    public UserOrder(String name, ArrayList<DishPrice> arrDP) {
+    public UserOrder(String name, ArrayList<DishPrice> ArrDP) {
 
-        this.name = this.name;
+        this.name = name;
         this.ArrDP = ArrDP;
 
     }
 
     public ArrayList<DishPrice> getArrDP() {
         return ArrDP;
+    }
+
+    public void setArrDP(ArrayList<DishPrice> arrDP) {
+        ArrDP = arrDP;
     }
 
     public String getName() {
@@ -27,11 +31,6 @@ public class UserOrder {
     public void setName(String name) {
         this.name = name;
     }
-
-    public void setArrDP(ArrayList<DishPrice> arrDP) {
-        ArrDP = arrDP;
-
-
-    }
 }
+
 

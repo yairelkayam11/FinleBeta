@@ -33,16 +33,15 @@ public class CreateEvent extends AppCompatActivity {
     EditText ETplace, ETepass,ETname;
     TextView TVD, TVT;
     Evnts evnt;
-    String place, Epass,time,date;
-    public static String name;
+    String place, Epass,time,date,name;
     DatePickerDialog dpd;
     TimePickerDialog tpd;
     Calendar c;
     Long count;
     Long IDD;
    public static String t;
-    boolean Active = true;
-    ArrayList<UserOrder> UOarray;
+   boolean Active = true;
+    ArrayList<UserOrder> ArrUO;
 
 
 
@@ -128,20 +127,30 @@ public class CreateEvent extends AppCompatActivity {
     public void CreateEV (View view) {
 
         place = ETplace.getText().toString();
+        if (place.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a place ", Toast.LENGTH_SHORT).show();
         Epass = ETepass.getText().toString();
+        if (Epass.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a password ", Toast.LENGTH_SHORT).show();
         name = ETname.getText().toString();
+        if (name.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter event name ", Toast.LENGTH_SHORT).show();
         date = TVD.getText().toString();
+        if (date.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a date ", Toast.LENGTH_SHORT).show();
         time = TVT.getText().toString();
+        if (time.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a time ", Toast.LENGTH_SHORT).show();
         IDD = count;
         t = IDD.toString();
 
 
+        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {
 
-        evnt = new Evnts(IDD,place,name,date,time,Epass,Active,UOarray);
-        refEvnts.child(t).setValue(evnt);
+            evnt = new Evnts(IDD, place, name, date, time, Epass, Active);
+            refEvnts.child(t).setValue(evnt);
 
-        Intent go = new Intent(this , OrderAct.class);
-        startActivity(go);
+            Intent go = new Intent(this , OrderAct.class);
+            startActivity(go);
+
+        }
+
+
     }
 
 

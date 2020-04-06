@@ -61,6 +61,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
                     dataa = dataTMP1;
                 }
 
+
                 adp = new ArrayAdapter<>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
                 lv.setAdapter(adp);
 
@@ -74,6 +75,13 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
      };
 
         refEvnts.child("Evnts").addValueEventListener(listener);
+    }
+
+
+    private void adapt() {
+
+        adp = new ArrayAdapter<>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
+        lv.setAdapter(adp);
     }
 
 
@@ -98,14 +106,14 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String str = et.getText().toString();
-                if (str !=dataa.getEpass()) {
-                    Toast.makeText(AddEventACT.this , "Incorrect password ",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (str != dataa.getEpass()) {
+                    Toast.makeText(AddEventACT.this, "Incorrect password ", Toast.LENGTH_SHORT).show();
+                } else {
 
-                    Toast.makeText(AddEventACT.this , "correct :) ",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddEventACT.this, "correct ", Toast.LENGTH_SHORT).show();
 
-                    // מעבר לאקטיביטי של ההזמנה
+                   //  Intent t = new Intent(this,OrderAct.class);
+                   //  startActivity(t);
                 }
             }
         });
@@ -120,4 +128,8 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         ad.show();
 
     }
+
+
+
+
 }
