@@ -85,6 +85,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
+
     public void AddEvent (View view) {
 
         Intent t = new Intent(this,CreateEvent.class);
