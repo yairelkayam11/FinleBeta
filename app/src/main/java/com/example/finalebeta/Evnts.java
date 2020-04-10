@@ -1,7 +1,5 @@
 package com.example.finalebeta;
 
-import android.widget.ArrayAdapter;
-
 import java.util.ArrayList;
 
 public class Evnts {
@@ -15,8 +13,11 @@ public class Evnts {
     private boolean Active;
     ArrayList<UserOrder> ArrUO = new ArrayList<UserOrder>();
 
+    public Evnts(){}
 
-    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active) {
+
+
+    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active ,  ArrayList<UserOrder> ArrUO ) {
         this.ID = ID;
         this.time = time;
         this.name = name;
@@ -24,6 +25,7 @@ public class Evnts {
         this.place = place;
         this.Active = Active;
         this.Epass = Epass;
+        this.ArrUO = ArrUO;
 
 
     }

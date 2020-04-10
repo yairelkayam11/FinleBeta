@@ -142,7 +142,7 @@ public class CreateEvent extends AppCompatActivity {
 
         if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {
 
-            evnt = new Evnts(IDD, place, name, date, time, Epass, Active);
+            evnt = new Evnts(IDD, place, name, date, time, Epass, Active,null);
             refEvnts.child(t).setValue(evnt);
 
             Intent go = new Intent(this , OrderAct.class);

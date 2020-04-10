@@ -9,6 +9,8 @@ public class UserOrder {
 
     public UserOrder(String name, DishPrice ArrDP){}
 
+    public UserOrder(){}
+
     public UserOrder(String name, ArrayList<DishPrice> ArrDP) {
 
         this.name = name;

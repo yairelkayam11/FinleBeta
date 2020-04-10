@@ -74,7 +74,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             }
      };
 
-        refEvnts.child("Evnts").addValueEventListener(listener);
+        refEvnts.addValueEventListener(listener);
     }
 
 
@@ -113,8 +113,8 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
 
                     Toast.makeText(AddEventACT.this, "correct ", Toast.LENGTH_SHORT).show();
 
-                   //  Intent t = new Intent(this,OrderAct.class);
-                   //  startActivity(t);
+                     Intent t = new Intent(AddEventACT.this,OrderAct.class);
+                     startActivity(t);
                 }
             }
         });
