@@ -125,25 +125,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/lv"
-            android:layout_width="match_parent"
-            android:layout_height="319dp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -167,6 +148,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="319dp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

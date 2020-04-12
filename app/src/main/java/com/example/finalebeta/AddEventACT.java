@@ -36,6 +36,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     ValueEventListener listener;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
                     Evnts dataTMP1 = data.getValue(Evnts.class);
                     Values.add(dataTMP1);
                     IDlist.add(dataTMP1.getName());
-                    dataa = dataTMP1;
+                   // dataa = dataTMP1;
                 }
 
 
@@ -96,6 +97,8 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        dataa = Values.get(position);
+
         AlertDialog.Builder adb;
         adb = new AlertDialog.Builder(this);
         adb.setCancelable(false);
@@ -107,14 +110,17 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String str = et.getText().toString();
-                if (str != dataa.getEpass()) {
-                    Toast.makeText(AddEventACT.this, "Incorrect password ", Toast.LENGTH_SHORT).show();
-                } else {
+                if (str.equals(dataa.getEpass()) ) {
 
                     Toast.makeText(AddEventACT.this, "correct ", Toast.LENGTH_SHORT).show();
 
-                     Intent t = new Intent(AddEventACT.this,OrderAct.class);
-                     startActivity(t);
+                    Intent t = new Intent(AddEventACT.this,OrderAct.class);
+                    startActivity(t);
+
+                } else {
+
+                    Toast.makeText(AddEventACT.this, "Incorrect password ", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

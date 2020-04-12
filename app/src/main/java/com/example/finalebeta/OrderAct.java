@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,10 +30,8 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     Button btn;
     ArrayAdapter adp;
     ListView lv;
-    String nameTMP;
-    ArrayList<DishPrice> ArrTMP;
     int i = 0;
-    UserOrder userorder;
+
 
 
 
@@ -47,33 +46,32 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
         btn=(Button)findViewById(R.id.btn);
         lv = (ListView)findViewById(R.id.lv2);
-        lv.setOnItemClickListener (OrderAct.this);
+        lv.setOnItemClickListener (this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+
 
         ValueEventListener vel = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
 
                 Ast.clear();
-                UO.clear();
 
                 for (DataSnapshot data : ds.getChildren()) {
+
                     Evnts dataTMP = data.getValue(Evnts.class);
 
+                    if (dataTMP.getArrUO().size()!=0) {
 
-                    while(i<dataTMP.getArrUO().size()) {
-                        userorder = new UserOrder(dataTMP.getArrUO().get(i).getName(), dataTMP.getArrUO().get(i).getArrDP());
-                        UO.add(userorder);
                         Ast.add((dataTMP.getArrUO().get(i).getName()));
+
                         i++;
                     }
 
-
-                }
+                    }
 
                 adp = new ArrayAdapter<>(OrderAct.this,R.layout.support_simple_spinner_dropdown_item, Ast);
                 lv.setAdapter(adp);
-
 
             }
 
@@ -83,10 +81,13 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
             }
         };
 
-        refEvnts.child("Evnts").addValueEventListener(vel);
+        refEvnts.addValueEventListener(vel);
+
     }
 
+
     public void AddDiner (View view) {
+
 
         Intent t = new Intent(this,DinerOrderAct.class);
         startActivity(t);
@@ -97,5 +98,12 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+
+        Intent t = new Intent(this,OrderDataPreview.class);
+        t.putExtra("key",position);
+        startActivity(t);
+
+
     }
+
 }
