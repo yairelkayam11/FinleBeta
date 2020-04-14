@@ -17,7 +17,10 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import static com.example.finalebeta.AddEventACT.EventID;
+
 
 import java.util.ArrayList;
 
@@ -26,6 +29,7 @@ import static com.example.finalebeta.FBref.refEvnts;
 
 public class OrderDataPreview extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+//   public class OrderDataPreview extends AppCompatActivity{
     Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
     ListView lv3;
     EditText EditName, ETdish, ETprice, ETmoney;
@@ -38,13 +42,15 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     ArrayList<DishPrice> ARRDP;
     ArrayList<String> Ast;
     ArrayList<UserOrder> ArrUO;
+        ArrayList<UserOrder>UO;
     String dish;
     float price,priceTMP;
     int i = 0;
-    int pos = 0;
+    String NameID;
     String Sprice;
     DishPrice dp;
     String Ssum,Smp,Schange;
+    int j;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,63 +74,72 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         TVchange = (TextView) findViewById(R.id.TVchange);
         TVmoneypeid = (TextView) findViewById(R.id.TVmoneypeid);
         lv3 = (ListView) findViewById(R.id.lv3);
-        lv3.setOnItemClickListener (this);
+        //lv3.setOnItemClickListener (this);
         lv3.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         ARRDP = new ArrayList<DishPrice>();
         Ast = new ArrayList<String>();
         ArrUO = new ArrayList<UserOrder>();
+        UO = new ArrayList<UserOrder>();
+
+
+        NameID = getIntent().getExtras().getString("key");
+
+        Query query = refEvnts.orderByChild("id").equalTo(EventID);
+
+        query.addListenerForSingleValueEvent(vel);
 
 
 
-        ValueEventListener vel = new ValueEventListener() {
 
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-
-                Ast.clear();
-                ARRDP.clear();
-
-                for(DataSnapshot data : ds.getChildren()) {
-                    Evnts dataTMP1 = data.getValue(Evnts.class);
-                    Intent t = new Intent();
-                    pos = t.getIntExtra("key",pos2);
-                    name = dataTMP1.getArrUO().get(pos).getName();
-                    MoneyP = dataTMP1.getArrUO().get(pos).getMoneyPEID();
-                    change = dataTMP1.getArrUO().get(pos).getChange();
-                    sum = dataTMP1.getArrUO().get(pos).getTotalprice();
+        tv1.setText("Order summary of" + " " + NameID);
+        tv2.setText(NameID);
+    }
 
 
-                    while(i<dataTMP1.getArrUO().size()) {
-                      dish = dataTMP1.getArrUO().get(pos).getArrDP().get(i).getDish();
-                      price = dataTMP1.getArrUO().get(pos).getArrDP().get(i).getPrice();
 
-                      dp = new DishPrice(dish,price);
+    com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
 
-                       ARRDP.add(dp);
 
-                       Sprice = String.valueOf(price);
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
 
-                        Ast.add(dish+ " " +Sprice);
-                        i++;
+            Ast.clear();
+            ARRDP.clear();
+
+            for(DataSnapshot data : ds.getChildren()) {
+                Evnts dataTMP1 = data.getValue(Evnts.class);
+
+                UO = dataTMP1.getArrUO();
+
+                for (int i = 0;i<UO.size();i++) {
+                    if (NameID.equals(UO.get(i).getName())) {
+                        j=i;
                     }
                 }
-                adp = new ArrayAdapter<>(OrderDataPreview.this,R.layout.support_simple_spinner_dropdown_item, Ast);
-                lv3.setAdapter(adp);
+                //name = dataTMP1.getArrUO().get(Integer.parseInt(NameID)).getName();
+                MoneyP = UO.get(j).getMoneyPEID();
+                change = UO.get(j).getChange();
+                sum = UO.get(j).getTotalprice();
+
+                ARRDP=UO.get(j).getArrDP();
+                for(int i = 0; i<ARRDP.size(); i++){
+                    Ast.add( ARRDP.get(i).getDish() + " - " + ARRDP.get(i).getPrice());
+                }
+
 
             }
+            adp = new ArrayAdapter<>(OrderDataPreview.this,R.layout.support_simple_spinner_dropdown_item, Ast);
+            lv3.setAdapter(adp);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
 
-            }
-        };
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        refEvnts.child("Evnts").addValueEventListener(vel);
+        }
+    };
 
-        tv1.setText("Order summary of" + " " + name);
-        tv2.setText(name);
-    }
 
     public void EditName(View view) {
 
@@ -163,7 +178,8 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         ARRDP.add(dp);
         ETdish.setVisibility(View.INVISIBLE);
         ETprice.setVisibility(View.INVISIBLE);
-        Ast.add(dish+ " " +Sprice);
+        btn3.setVisibility(View.INVISIBLE);
+        Ast.add(dish+ " " +price);
         adp.notifyDataSetChanged();
 
         Tvtotalprice.setText(Ssum);
@@ -204,7 +220,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
 
 
-                refEvnts.child("DinerOrder").child(String.valueOf(pos)).child("arrDP").child(String.valueOf(position)).removeValue();
+                refEvnts.child("DinerOrder").child(String.valueOf()).child("arrDP").child(String.valueOf(position)).removeValue();
 
                 Ast.remove(position);
                 adp.notifyDataSetChanged();

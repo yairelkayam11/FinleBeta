@@ -15,12 +15,16 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import static com.example.finalebeta.AddEventACT.EventID;
 
 import static com.example.finalebeta.CreateEvent.t;
 import static com.example.finalebeta.CreateEvent.t;
 import static com.example.finalebeta.FBref.refEvnts;
 
+import java.net.IDN;
 import java.util.ArrayList;
 
 
@@ -31,6 +35,12 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     ArrayAdapter adp;
     ListView lv;
     int i = 0;
+    UserOrder dataa;
+    String dataaName;
+    Long pos,pos2;
+    Evnts dataTMP;
+  //  UserOrder yair;
+
 
 
 
@@ -38,6 +48,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
     ArrayList<String> Ast = new ArrayList<String>();
     ArrayList<UserOrder> UO = new ArrayList<UserOrder>();
+    ArrayList<UserOrder> yair = new ArrayList<UserOrder>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,45 +62,58 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
 
 
-        ValueEventListener vel = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
 
-                Ast.clear();
 
-                for (DataSnapshot data : ds.getChildren()) {
+        Query query = refEvnts
+                .orderByChild("id")
+                .equalTo(EventID);
+        query.addListenerForSingleValueEvent(vel);
 
-                    Evnts dataTMP = data.getValue(Evnts.class);
-
-                    if (dataTMP.getArrUO().size()!=0) {
-
-                        Ast.add((dataTMP.getArrUO().get(i).getName()));
-
-                        i++;
-                    }
-
-                    }
-
-                adp = new ArrayAdapter<>(OrderAct.this,R.layout.support_simple_spinner_dropdown_item, Ast);
-                lv.setAdapter(adp);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-        refEvnts.addValueEventListener(vel);
 
     }
 
+   com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
+
+
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
+            if (ds.exists()) {
+                for (DataSnapshot data : ds.getChildren()) {
+                    dataTMP = data.getValue(Evnts.class);
+
+
+                    Toast.makeText(OrderAct.this, ""+dataTMP.getArrUO().size(), Toast.LENGTH_SHORT).show();
+
+                    if (dataTMP.getArrUO().isEmpty()) {
+
+                        Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();
+                    }
+                    for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
+
+                        Ast.add(dataTMP.getArrUO().get(j).getName());
+                        UO.add(dataTMP.getArrUO().get(j));
+
+                    }
+
+                }
+            }
+
+            adp = new ArrayAdapter<>(OrderAct.this,R.layout.support_simple_spinner_dropdown_item, Ast);
+            lv.setAdapter(adp);
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
     public void AddDiner (View view) {
 
 
         Intent t = new Intent(this,DinerOrderAct.class);
+        t.putExtra("key",pos);
         startActivity(t);
 
 
@@ -98,9 +122,12 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+        dataa = UO.get(position);
+        dataaName = dataa.getName();
+
 
         Intent t = new Intent(this,OrderDataPreview.class);
-        t.putExtra("key",position);
+        t.putExtra("key",dataaName);
         startActivity(t);
 
 

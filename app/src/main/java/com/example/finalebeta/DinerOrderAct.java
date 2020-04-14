@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.EventLog;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.finalebeta.CreateEvent.t;
+import static com.example.finalebeta.AddEventACT.EventID;
 
 import static com.example.finalebeta.CreateEvent.t;
 import static com.example.finalebeta.FBref.refUsers;
@@ -61,6 +64,9 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
     Double MoneyP;
     Double change;
     String STRMoneyP,Schange;
+    Evnts dataTMP;
+
+
 
 
 
@@ -85,10 +91,43 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         adp = new ArrayAdapter<String>(DinerOrderAct.this , R.layout.support_simple_spinner_dropdown_item, arrST);
         lv.setAdapter(adp);
 
-        //ArrDP.clear();
+
+
+
+        ArrDP.clear();
+        t= EventID;
+
+        Query query = refEvnts
+                .orderByChild("id")
+                .equalTo(t);
+        query.addListenerForSingleValueEvent(vel);
+
 
 
     }
+
+
+    com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
+
+
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
+            if (ds.exists()) {
+                for (DataSnapshot data : ds.getChildren()) {
+                    dataTMP = data.getValue(Evnts.class);
+
+                }
+            }
+
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
+
 
     public void apply (View view) {
 
@@ -155,12 +194,18 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         Schange = String.valueOf(change);
         tv17.setText(Schange);
 
-
+        ArrUO=dataTMP.getArrUO();
         UserOrder uo = new UserOrder(namee,ArrDP,sum,change,MoneyP);
 
        ArrUO.add(uo);
 
-        refEvnts.child(t).child("DinerOrder").child("" + namee).setValue(ArrUO);
+        dataTMP.setArrUO(ArrUO);
+        refEvnts.child(""+t).setValue(dataTMP);
+
+
+
+
+        //refEvnts.child(""+t).child("DinerOrder").child("" + namee).setValue(ArrUO);
 
         Toast.makeText(DinerOrderAct.this, "Your order has been received", Toast.LENGTH_SHORT).show();
 

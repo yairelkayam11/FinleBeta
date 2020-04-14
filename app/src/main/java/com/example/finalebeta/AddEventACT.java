@@ -33,6 +33,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     ListView lv;
     ArrayAdapter adp;
     Evnts dataa;
+    public static Long EventID;
     ValueEventListener listener;
 
 
@@ -95,10 +96,10 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
         dataa = Values.get(position);
-
+        EventID  = dataa.getID();
         AlertDialog.Builder adb;
         adb = new AlertDialog.Builder(this);
         adb.setCancelable(false);

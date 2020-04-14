@@ -39,7 +39,7 @@ public class CreateEvent extends AppCompatActivity {
     Calendar c;
     Long count;
     Long IDD;
-   public static String t;
+   public static Long t;
    boolean Active = true;
     ArrayList<UserOrder> ArrUO;
 
@@ -137,15 +137,15 @@ public class CreateEvent extends AppCompatActivity {
         time = TVT.getText().toString();
         if (time.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a time ", Toast.LENGTH_SHORT).show();
         IDD = count;
-        t = IDD.toString();
+        t = IDD;
 
 
         if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {
 
             evnt = new Evnts(IDD, place, name, date, time, Epass, Active,null);
-            refEvnts.child(t).setValue(evnt);
+            refEvnts.child(""+t).setValue(evnt);
 
-            Intent go = new Intent(this , OrderAct.class);
+            Intent go = new Intent(this , AddEventACT.class);
             startActivity(go);
 
         }
