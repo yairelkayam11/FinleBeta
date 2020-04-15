@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/beckground2"
     android:layout_height="match_parent"
     tools:context=".CreateEvent">
 
@@ -26,10 +27,12 @@
     <EditText
         android:id="@+id/ETname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
+        android:paddingLeft="15dp"
+        android:background="@drawable/edittext_rouns"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Event Name :" />
+        android:hint="Event Name :"
+        android:inputType="textPersonName" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +44,9 @@
     <EditText
         android:id="@+id/ETplace"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
+        android:paddingLeft="15dp"
+        android:background="@drawable/edittext_rouns"
         android:ems="10"
         android:hint="Place :"
         android:inputType="textPersonName" />
@@ -55,34 +60,49 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="95dp"
+        android:layout_height="111dp"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="2dp" />
 
         <Button
             android:id="@+id/DateBtn"
             android:layout_width="7dp"
-            android:layout_height="100dp"
+            android:layout_height="73dp"
             android:layout_weight="1"
+            android:background="@drawable/button2_rouns"
             android:onClick="DatePicker"
-            android:text="Pick Date" />
+            android:text="Pick Date"
+            android:textColor="#ffff" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="9dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/TimeBtn"
             android:layout_width="7dp"
-            android:layout_height="100dp"
+            android:layout_height="73dp"
             android:layout_weight="1"
+            android:background="@drawable/button2_rouns"
             android:onClick="TimePicker"
-            android:text="Pick Time" />
+            android:text="Pick Time"
+            android:textColor="#ffff" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="21dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,9 +128,11 @@
     <EditText
         android:id="@+id/ETepass"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:ems="10"
         android:hint="Password :"
+        android:paddingLeft="15dp"
+        android:background="@drawable/edittext_rouns"
         android:inputType="number" />
 
     <LinearLayout
@@ -122,9 +144,11 @@
 
     <Button
         android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="69dp"
+        android:layout_width="117dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="@drawable/button2_rouns"
+        android:textColor="#ffff"
         android:onClick="CreateEV"
         android:text="Create" />
 

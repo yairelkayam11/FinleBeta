@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
@@ -25,15 +27,15 @@ import static com.example.finalebeta.AddEventACT.EventID;
 import java.util.ArrayList;
 
 import static com.example.finalebeta.CreateEvent.t;
+import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
 
 public class OrderDataPreview extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-//   public class OrderDataPreview extends AppCompatActivity{
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7,btnCancelName,btncancelDish,btncancelMP;
     ListView lv3;
     EditText EditName, ETdish, ETprice, ETmoney;
-    TextView tv1, tv2, Tvtotalprice, TVchange, TVmoneypeid;
+    TextView tv2, Tvtotalprice, TVchange, TVmoneypeid;
     String name;
     double MoneyP,change,sum;
     AlertDialog.Builder adb;
@@ -46,11 +48,16 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     String dish;
     float price,priceTMP;
     int i = 0;
-    String NameID;
+    String NameID,g,k;
     String Sprice;
     DishPrice dp;
     String Ssum,Smp,Schange;
     int j;
+    Evnts dataTMP1;
+    String EVid;
+    int flag = 1;
+    User Useruid;
+    String userUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +71,13 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         btn5 = (Button) findViewById(R.id.btn5);
         btn6 = (Button) findViewById(R.id.btn6);
         btn7 = (Button) findViewById(R.id.btn7);
+        btncancelDish = (Button) findViewById(R.id.btncancelDish);
+        btnCancelName = (Button) findViewById(R.id.btnCancelName);
+        btncancelMP = (Button) findViewById(R.id.btncancelMP);
         EditName = (EditText) findViewById(R.id.EditName);
         ETdish = (EditText) findViewById(R.id.ETdish);
         ETprice = (EditText) findViewById(R.id.ETprice);
         ETmoney = (EditText) findViewById(R.id.ETmoney);
-        tv1 = (TextView) findViewById(R.id.tv1);
         tv2 = (TextView) findViewById(R.id.tv2);
         Tvtotalprice = (TextView) findViewById(R.id.Tvtotalprice);
         TVchange = (TextView) findViewById(R.id.TVchange);
@@ -82,6 +91,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         UO = new ArrayList<UserOrder>();
 
 
+
         NameID = getIntent().getExtras().getString("key");
 
         Query query = refEvnts.orderByChild("id").equalTo(EventID);
@@ -89,11 +99,14 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         query.addListenerForSingleValueEvent(vel);
 
 
+         EVid = String.valueOf(EventID);
 
 
 
-        tv1.setText("Order summary of" + " " + NameID);
-        tv2.setText(NameID);
+
+
+
+        tv2.setText("Order summary of" + " " + NameID);
     }
 
 
@@ -108,7 +121,12 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
             ARRDP.clear();
 
             for(DataSnapshot data : ds.getChildren()) {
-                Evnts dataTMP1 = data.getValue(Evnts.class);
+                  dataTMP1 = data.getValue(Evnts.class);
+                  Useruid = data.getValue(User.class);
+
+                FirebaseUser user = refAuth.getCurrentUser();
+                userUID = user.getUid();
+
 
                 UO = dataTMP1.getArrUO();
 
@@ -117,8 +135,8 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                         j=i;
                     }
                 }
-                //name = dataTMP1.getArrUO().get(Integer.parseInt(NameID)).getName();
-                MoneyP = UO.get(j).getMoneyPEID();
+                name = UO.get(j).getName();
+                 MoneyP = UO.get(j).getMoneyPEID();
                 change = UO.get(j).getChange();
                 sum = UO.get(j).getTotalprice();
 
@@ -126,6 +144,10 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                 for(int i = 0; i<ARRDP.size(); i++){
                     Ast.add( ARRDP.get(i).getDish() + " - " + ARRDP.get(i).getPrice());
                 }
+
+                Tvtotalprice.setText("Total price :" +sum);
+                TVchange.setText("Change :"+change);
+                TVmoneypeid.setText("Money peid :"+MoneyP);
 
 
             }
@@ -138,6 +160,8 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
         }
+
+
     };
 
 
@@ -145,16 +169,32 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         EditName.setVisibility(View.VISIBLE);
         btn6.setVisibility(View.VISIBLE);
+        btnCancelName.setVisibility(View.VISIBLE);
+
         EditName.setHint("Order name :");
 
     }
     public void ApplyName (View view) {
 
         name = EditName.getText().toString();
-        tv1.setText("Order summary of" + " " + name);
-        tv2.setText(name);
+
+        if (name.isEmpty()) {
+            Toast.makeText(OrderDataPreview.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            tv2.setText("Order summary of" + " " + name);
+            EditName.setVisibility(View.INVISIBLE);
+            btn6.setVisibility(View.INVISIBLE);
+            btnCancelName.setVisibility(View.INVISIBLE);
+        }
+
+    }
+    public void cancelName (View view) {
+
         EditName.setVisibility(View.INVISIBLE);
         btn6.setVisibility(View.INVISIBLE);
+        btnCancelName.setVisibility(View.INVISIBLE);
+
     }
 
     public void EditOrder (View view) {
@@ -162,6 +202,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         ETdish.setVisibility(View.VISIBLE);
         ETprice.setVisibility(View.VISIBLE);
         btn3.setVisibility(View.VISIBLE);
+        btncancelDish.setVisibility(View.VISIBLE);
         ETdish.setHint("food name :");
         ETprice.setHint("price :");
     }
@@ -171,43 +212,71 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         dish = ETdish.getText().toString();
         price = Float.parseFloat(ETprice.getText().toString());
 
-        sum = sum + price;
-        Ssum = String.valueOf(sum);
+        if (dish.isEmpty()||ETprice.getText().toString().isEmpty()) {
 
-        dp = new DishPrice(dish,price);
-        ARRDP.add(dp);
+            Toast.makeText(OrderDataPreview.this, "you must enter price or dish name ", Toast.LENGTH_SHORT).show();
+
+            flag = 0;
+        }
+
+         if (flag==1) {
+             sum = sum + price;
+             Ssum = String.valueOf(sum);
+
+             dp = new DishPrice(dish, price);
+             ARRDP.add(dp);
+             ETdish.setVisibility(View.INVISIBLE);
+             ETprice.setVisibility(View.INVISIBLE);
+             btn3.setVisibility(View.INVISIBLE);
+             btncancelDish.setVisibility(View.INVISIBLE);
+             ETdish.setText("");
+             ETprice.setText("");
+             Ast.add(dish + " - " + price);
+             adp.notifyDataSetChanged();
+
+             Tvtotalprice.setText("Total price :" + Ssum);
+         }
+
+    }
+    public void cancelDish (View view) {
+
         ETdish.setVisibility(View.INVISIBLE);
         ETprice.setVisibility(View.INVISIBLE);
         btn3.setVisibility(View.INVISIBLE);
-        Ast.add(dish+ " " +price);
-        adp.notifyDataSetChanged();
-
-        Tvtotalprice.setText(Ssum);
+        btncancelDish.setVisibility(View.INVISIBLE);
     }
 
     public void MPedit (View view) {
 
         ETmoney.setVisibility(View.VISIBLE);
         btn7.setVisibility(View.VISIBLE);
+        btncancelMP.setVisibility(View.VISIBLE);
         ETmoney.setHint("Money peid :");
     }
     public void ApplyMoney (View view) {
 
         MoneyP = Double.parseDouble(ETmoney.getText().toString());
+        k = ETmoney.getText().toString();
+        if (k.isEmpty()) Toast.makeText(OrderDataPreview.this, "You must enter money peid", Toast.LENGTH_SHORT).show();
         Smp = String.valueOf(MoneyP);
-        TVmoneypeid.setText(Smp);
+        TVmoneypeid.setText("Money peid :"+Smp);
         ETmoney.setVisibility(View.INVISIBLE);
         btn7.setVisibility(View.INVISIBLE);
+        btncancelMP.setVisibility(View.INVISIBLE);
 
         change = MoneyP-sum;
         Schange = String.valueOf(change);
-        TVchange.setText(Schange);
+        TVchange.setText("Change :"+Schange);
 
     }
 
+    public void cancelMP (View view) {
 
+        ETmoney.setVisibility(View.INVISIBLE);
+        btn7.setVisibility(View.INVISIBLE);
+        btncancelMP.setVisibility(View.INVISIBLE);
 
-
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -220,7 +289,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
 
 
-                refEvnts.child("DinerOrder").child(String.valueOf()).child("arrDP").child(String.valueOf(position)).removeValue();
+                refEvnts.child(String.valueOf(t)).child("arrUO").child("arrDP").child(String.valueOf(position)).removeValue();
 
                 Ast.remove(position);
                 adp.notifyDataSetChanged();
@@ -241,9 +310,10 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void back (View view) {
 
-        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP);
-        ArrUO.add(uo);
-        refEvnts.child(t).child("DinerOrder").child("" + name).setValue(ArrUO);
+        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID);
+
+        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);
+
 
 
         Intent t = new Intent(this,OrderAct.class);
@@ -252,10 +322,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void DeletOrder (View view) {
 
-        refEvnts.child("DinerOrder").child(String.valueOf(pos)).removeValue();
+        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();
 
         Intent t = new Intent(this,OrderAct.class);
         startActivity(t);
 
     }
+
 }

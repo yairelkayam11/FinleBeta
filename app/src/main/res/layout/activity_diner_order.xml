@@ -5,16 +5,35 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:background="@drawable/beckground2"
     tools:context=".DinerOrderAct">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
 
     <EditText
         android:id="@+id/ETname"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/edittext_rouns"
         android:ems="10"
+        android:hint="Diner name :"
+        android:paddingLeft="15dp"
         android:inputType="textPersonName"
-        android:hint="Diner name :" />
+        android:textColorHint="#000000" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,18 +42,22 @@
 
         <Button
             android:id="@+id/btn3"
-            android:layout_width="match_parent"
+            android:layout_width="191dp"
             android:layout_height="match_parent"
+            android:textStyle="italic"
+            android:textColor="#ffff"
+            android:layout_gravity="center"
+            android:background="@drawable/button2_rouns"
             android:onClick="apply"
             android:text="Apply" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="11dp"
-        android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="14dp"
+    android:orientation="vertical">
 
-    </LinearLayout>
+</LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,6 +67,7 @@
         <TextView
             android:id="@+id/tv3"
             android:layout_width="16dp"
+            android:textColor="#ffff"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -52,6 +76,7 @@
         <TextView
             android:id="@+id/tv4"
             android:layout_width="170dp"
+            android:textColor="#ffff"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -81,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:background="@drawable/edittext_rouns"
             android:gravity="center"
             android:inputType="textPersonName"
             android:text="" />
@@ -96,6 +122,7 @@
             android:layout_width="105dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/edittext_rouns"
             android:ems="10"
             android:gravity="center"
             android:inputType="phone" />
@@ -113,13 +140,29 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="107dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
+            android:textColor="#ffff"
+            android:background="@drawable/button2_rouns"
             android:onClick="AddDishPrice"
             android:text="add" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:orientation="vertical">
+
     </LinearLayout>
 
     <LinearLayout
@@ -131,6 +174,7 @@
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            android:textColor="#ffff"
             android:gravity="center"
             android:text="Money peid :"
             android:textSize="16dp" />
@@ -139,6 +183,7 @@
             android:id="@+id/et14"
             android:layout_width="41dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/edittext_rouns"
             android:layout_weight="1"
             android:ems="10"
             android:inputType="number" />
@@ -157,22 +202,13 @@
         <ListView
             android:id="@+id/lv"
             android:layout_width="match_parent"
-            android:layout_height="319dp" />
+            android:layout_height="330dp" />
     </LinearLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="11dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -186,6 +222,7 @@
             android:layout_width="6dp"
             android:layout_height="30dp"
             android:layout_weight="1"
+            android:textColor="#ffff"
             android:gravity="center"
             android:text="Change :"
             android:textSize="16dp" />
@@ -205,7 +242,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="12dp"
+        android:layout_height="10dp"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -220,6 +257,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="#ffff"
             android:text="Total price :"
             android:textSize="16dp" />
 
@@ -238,8 +276,12 @@
 
     <Button
         android:id="@+id/btn2"
-        android:layout_width="match_parent"
+        android:layout_width="192dp"
         android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:textColor="#ffff"
+        android:layout_gravity="center"
+        android:background="@drawable/button2_rouns"
         android:onClick="finish"
         android:text="Finish" />
 </LinearLayout>

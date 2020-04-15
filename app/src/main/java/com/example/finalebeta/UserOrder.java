@@ -9,18 +9,20 @@ public class UserOrder {
     private Double Totalprice;
     private Double Change;
     private Double MoneyPEID;
+    private String Useruid;
 
     public UserOrder(String name, DishPrice ArrDP){}
 
     public UserOrder(){}
 
-    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID) {
+    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid) {
 
         this.name = name;
         this.ArrDP = ArrDP;
         this.Totalprice = Totalprice;
         this.Change = Change;
         this.MoneyPEID = MoneyPEID;
+        this.Useruid = Useruid;
 
     }
 
@@ -62,6 +64,14 @@ public class UserOrder {
 
     public void setMoneyPEID(Double moneyPEID) {
         MoneyPEID = moneyPEID;
+    }
+
+    public String getUseruid() {
+        return Useruid;
+    }
+
+    public void setUseruid(String useruid) {
+        Useruid = useruid;
     }
 }
 

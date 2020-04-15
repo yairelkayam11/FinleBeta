@@ -34,6 +34,7 @@ import static com.example.finalebeta.CreateEvent.t;
 import static com.example.finalebeta.AddEventACT.EventID;
 
 import static com.example.finalebeta.CreateEvent.t;
+import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refUsers;
 import static com.example.finalebeta.FBref.refEvnts;
 import static java.util.Objects.*;
@@ -58,13 +59,14 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
     boolean Active;
     Double sum=0.0;
     String Ssum;
-    AlertDialog.Builder adb;
     int FriendsSum = 0;
     ArrayList<UserOrder> ArrUO;
     Double MoneyP;
     Double change;
-    String STRMoneyP,Schange;
+    String STRMoneyP,Schange,g;
     Evnts dataTMP;
+    User datUsers;
+    String Useruid;
 
 
 
@@ -115,6 +117,12 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             if (ds.exists()) {
                 for (DataSnapshot data : ds.getChildren()) {
                     dataTMP = data.getValue(Evnts.class);
+                    //datUsers = data.getValue(User.class);
+
+                    //Useruid = datUsers.getUid();
+
+                    FirebaseUser user = refAuth.getCurrentUser();
+                    Useruid = user.getUid();
 
                 }
             }
@@ -135,6 +143,8 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
         ETname.setText("");
 
+        if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -144,29 +154,32 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
                 dish = et2.getText().toString();
                 price = Float.parseFloat(et3.getText().toString());
+                g = et3.getText().toString();
 
-                sum = sum + price;
+                if (dish.isEmpty()||g.isEmpty()) {
+                    Toast.makeText(DinerOrderAct.this, "you must enter price or dish name ", Toast.LENGTH_SHORT).show();
+                }
+                else {
 
-                Ssum= String.valueOf(sum);
+                    sum = sum + price;
 
-                tv18.setText(Ssum);
+                    Ssum = String.valueOf(sum);
 
-                String g = et3.getText().toString();;
-
-                if (dish.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter a dish name ", Toast.LENGTH_SHORT).show();
-                if (g.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter a price ", Toast.LENGTH_SHORT).show();
-
-                DishPrice dp = new DishPrice(dish,price);
+                    tv18.setText(Ssum);
 
 
-                String str = dish + " - " +  price;
+                    DishPrice dp = new DishPrice(dish, price);
 
-                arrST.add(str);
 
-                ArrDP.add(dp);
+                    String str = dish + " - " + price;
 
-                et2.setText("");
-                et3.setText("");
+                    arrST.add(str);
+
+                    ArrDP.add(dp);
+
+                    et2.setText("");
+                    et3.setText("");
+                }
 
             }
 
@@ -194,13 +207,20 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         Schange = String.valueOf(change);
         tv17.setText(Schange);
 
-        ArrUO=dataTMP.getArrUO();
-        UserOrder uo = new UserOrder(namee,ArrDP,sum,change,MoneyP);
+        if (namee.isEmpty())    Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
+        if (MoneyP==null)   Toast.makeText(DinerOrderAct.this, "You must enter diner money peid", Toast.LENGTH_SHORT).show();
+        if (ArrDP.isEmpty())    Toast.makeText(DinerOrderAct.this, "You must enter an order", Toast.LENGTH_SHORT).show();
 
-       ArrUO.add(uo);
 
-        dataTMP.setArrUO(ArrUO);
-        refEvnts.child(""+t).setValue(dataTMP);
+
+            ArrUO = dataTMP.getArrUO();
+            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid);
+
+            ArrUO.add(uo);
+
+            dataTMP.setArrUO(ArrUO);
+            refEvnts.child("" + t).setValue(dataTMP);
+
 
 
 
@@ -217,15 +237,15 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-        adb=new AlertDialog.Builder(this);
+        AlertDialog.Builder adb = new AlertDialog.Builder(DinerOrderAct.this);
+        adb.setCancelable(false);
         adb.setMessage("Do you want to delete this dish?");
         adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
 
 
                 refEvnts.child("DinerOrder").child(String.valueOf(FriendsSum)).child("arrDP").child(String.valueOf(position)).removeValue();
@@ -243,9 +263,5 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         });
         AlertDialog ad = adb.create();
         ad.show();
-
-
-
-
     }
 }
