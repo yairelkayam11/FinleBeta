@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -44,11 +46,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     ArrayList<DishPrice> ARRDP;
     ArrayList<String> Ast;
     ArrayList<UserOrder> ArrUO;
-        ArrayList<UserOrder>UO;
+    ArrayList<UserOrder>UO;
     String dish;
     float price,priceTMP;
     int i = 0;
-    String NameID,g,k;
+    String NameID,k;
     String Sprice;
     DishPrice dp;
     String Ssum,Smp,Schange;
@@ -58,6 +60,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     int flag = 1;
     User Useruid;
     String userUID;
+    int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +94,13 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         UO = new ArrayList<UserOrder>();
 
 
+        adp = new ArrayAdapter<>(OrderDataPreview.this,R.layout.support_simple_spinner_dropdown_item, Ast);
+        lv3.setAdapter(adp);
+
+
 
         NameID = getIntent().getExtras().getString("key");
+        pos = getIntent().getExtras().getInt("key2");
 
         Query query = refEvnts.orderByChild("id").equalTo(EventID);
 
@@ -100,10 +108,6 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
 
          EVid = String.valueOf(EventID);
-
-
-
-
 
 
         tv2.setText("Order summary of" + " " + NameID);
@@ -139,8 +143,8 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                  MoneyP = UO.get(j).getMoneyPEID();
                 change = UO.get(j).getChange();
                 sum = UO.get(j).getTotalprice();
-
                 ARRDP=UO.get(j).getArrDP();
+
                 for(int i = 0; i<ARRDP.size(); i++){
                     Ast.add( ARRDP.get(i).getDish() + " - " + ARRDP.get(i).getPrice());
                 }
@@ -282,14 +286,15 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
         adb=new AlertDialog.Builder(this);
+        adb.setTitle("fdjkl");
         adb.setMessage("Do you want to delete this dish?");
-        adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {
+       /* adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
 
 
-                refEvnts.child(String.valueOf(t)).child("arrUO").child("arrDP").child(String.valueOf(position)).removeValue();
+                refEvnts.child(String.valueOf(t)).child("arrUO").child("arrDP").child(""+position).removeValue();
 
                 Ast.remove(position);
                 adp.notifyDataSetChanged();
@@ -297,12 +302,14 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
             }
         });
 
-        adb.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
+        */
+
         AlertDialog ad = adb.create();
         ad.show();
 
@@ -310,7 +317,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void back (View view) {
 
-        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID);
+        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,null);
 
         refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);
 
@@ -327,6 +334,38 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         Intent t = new Intent(this,OrderAct.class);
         startActivity(t);
 
+    }
+
+    public boolean onCreateOptionsMenu (Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+
+        return true;
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        String str = item.getTitle().toString();
+
+        if (str.equals("Feedback")) {
+
+            Intent t = new Intent(this,FeedbackAct.class);
+            t.putExtra("key3",pos);
+            startActivity(t);
+        }
+        if (str.equals("Open Events")) {
+
+            Intent t = new Intent(this,AddEventACT.class);
+            startActivity(t);
+        }
+
+        if (str.equals("Credits")) {
+
+            Intent t = new Intent(this,Creditim.class);
+            startActivity(t);
+        }
+        return true;
     }
 
 }

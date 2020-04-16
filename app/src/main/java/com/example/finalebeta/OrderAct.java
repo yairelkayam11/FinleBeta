@@ -127,28 +127,14 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-
-        SavedUID = dataTMP.getArrUO().get(position).getUseruid();
 
 
-        if (SavedUID.equals(userUID)) {
 
-            dataa = UO.get(position);
-            dataaName = dataa.getName();
+    public boolean onCreateOptionsMenu (Menu menu) {
 
+        getMenuInflater().inflate(R.menu.main,menu);
 
-            Intent t = new Intent(this,OrderDataPreview.class);
-            t.putExtra("key",dataaName);
-            startActivity(t);
-
-        }
-        else {
-
-            Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show();
-
-        }
+        return true;
 
     }
 
@@ -170,4 +156,32 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         return true;
      }
 
-}
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+
+            SavedUID = dataTMP.getArrUO().get(position).getUseruid();
+
+
+            if (SavedUID.equals(userUID)) {
+
+                dataa = UO.get(position);
+                dataaName = dataa.getName();
+
+
+                Intent t = new Intent(this,OrderDataPreview.class);
+                t.putExtra("key",dataaName);
+                t.putExtra("key2",position);
+                startActivity(t);
+
+            }
+            else {
+
+                Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show();
+
+            }
+
+        }
+
+    }
+

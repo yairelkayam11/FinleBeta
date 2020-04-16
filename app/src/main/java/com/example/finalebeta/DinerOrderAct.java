@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.EventLog;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -214,7 +216,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
 
             ArrUO = dataTMP.getArrUO();
-            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid);
+            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,null);
 
             ArrUO.add(uo);
 
@@ -263,5 +265,32 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         });
         AlertDialog ad = adb.create();
         ad.show();
+    }
+
+
+    public boolean onCreateOptionsMenu (Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+
+        return true;
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        String str = item.getTitle().toString();
+
+        if (str.equals("Open Events")) {
+
+            Intent t = new Intent(this,AddEventACT.class);
+            startActivity(t);
+        }
+        if (str.equals("Credits")) {
+
+            Intent t = new Intent(this,Creditim.class);
+            startActivity(t);
+        }
+
+        return true;
     }
 }

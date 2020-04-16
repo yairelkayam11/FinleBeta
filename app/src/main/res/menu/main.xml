@@ -7,11 +7,28 @@
         android:title="Open Events"
         android:orderInCategory="100" />
 
+    <item
+        android:id="@+id/menuLogin"
+        android:orderInCategory="200"
+        android:title="Login"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/menuDB"
+        android:orderInCategory="300"
+        android:title="DataBase"
+        android:visible="false" />
+
 
     <item
         android:id="@+id/Credits"
         android:title="Credits"
-        android:orderInCategory="200"/>
+        android:orderInCategory="400"/>
+
+    <item
+        android:id="@+id/Feedback"
+        android:title="Feedback"
+        android:orderInCategory="500"/>
 
 
 </menu>

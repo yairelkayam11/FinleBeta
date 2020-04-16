@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,9 +19,12 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.finalebeta.FBref.refEvnts;
 
@@ -34,7 +39,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     ArrayAdapter adp;
     Evnts dataa;
     public static Long EventID;
-    ValueEventListener listener;
+
 
 
 
@@ -48,36 +53,46 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-         ValueEventListener listener = new ValueEventListener() {
+        Calendar calendar = Calendar.getInstance();
+        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        currentDate = currentDate.replace('.','/');
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-                IDlist.clear();
-                Values.clear();
+        Query query =  refEvnts.orderByChild("date").equalTo(currentDate);
+        query.addListenerForSingleValueEvent(listener);
 
-                for(DataSnapshot data : ds.getChildren()) {
-
-                    Evnts dataTMP1 = data.getValue(Evnts.class);
-                    Values.add(dataTMP1);
-                    IDlist.add(dataTMP1.getName());
-                   // dataa = dataTMP1;
-                }
-
-
-                adp = new ArrayAdapter<>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
-                lv.setAdapter(adp);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-     };
-
-        refEvnts.addValueEventListener(listener);
     }
+
+    com.google.firebase.database.ValueEventListener listener = new ValueEventListener() {
+
+
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
+
+
+            IDlist.clear();
+            Values.clear();
+
+            for(DataSnapshot data : ds.getChildren()) {
+
+                Evnts dataTMP1 = data.getValue(Evnts.class);
+                Values.add(dataTMP1);
+                IDlist.add(dataTMP1.getName());
+                // dataa = dataTMP1;
+            }
+
+
+            adp = new ArrayAdapter<>(AddEventACT.this,R.layout.support_simple_spinner_dropdown_item, IDlist);
+            lv.setAdapter(adp);
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            Toast.makeText(AddEventACT.this, "There is no open event today", Toast.LENGTH_SHORT).show();
+
+        }
+    };
 
 
     private void adapt() {
@@ -135,6 +150,28 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         AlertDialog ad = adb.create();
         ad.show();
 
+    }
+
+    public boolean onCreateOptionsMenu (Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+
+        return true;
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        String str = item.getTitle().toString();
+
+
+        if (str.equals("Credits")) {
+
+            Intent t = new Intent(this,Creditim.class);
+            startActivity(t);
+        }
+
+        return true;
     }
 
 

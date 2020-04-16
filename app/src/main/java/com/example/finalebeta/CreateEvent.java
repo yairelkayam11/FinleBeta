@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -151,7 +152,14 @@ public class CreateEvent extends AppCompatActivity {
 
         }
 
+    }
 
+
+    public boolean onCreateOptionsMenu (Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+
+        return true;
 
     }
 
@@ -172,6 +180,8 @@ public class CreateEvent extends AppCompatActivity {
 
         return true;
     }
+
+
 
 
 

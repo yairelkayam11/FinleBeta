@@ -10,12 +10,14 @@ public class UserOrder {
     private Double Change;
     private Double MoneyPEID;
     private String Useruid;
+    private String Feedback;
+    private String Rate;
 
     public UserOrder(String name, DishPrice ArrDP){}
 
     public UserOrder(){}
 
-    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid) {
+    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid,String Feedback,String Rate) {
 
         this.name = name;
         this.ArrDP = ArrDP;
@@ -23,6 +25,8 @@ public class UserOrder {
         this.Change = Change;
         this.MoneyPEID = MoneyPEID;
         this.Useruid = Useruid;
+        this.Feedback = Feedback;
+        this.Rate = Rate;
 
     }
 
@@ -72,6 +76,22 @@ public class UserOrder {
 
     public void setUseruid(String useruid) {
         Useruid = useruid;
+    }
+
+    public String getFeedback() {
+        return Feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        Feedback = feedback;
+    }
+
+    public String getRate() {
+        return Rate;
+    }
+
+    public void setRate(String rate) {
+        Rate = rate;
     }
 }
 

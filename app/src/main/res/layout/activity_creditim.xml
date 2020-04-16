@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:gravity=""
         android:padding="20dp"
-        android:text="Teacher&Mentor : Albert Levy"
+        android:text="Teacher/Mentor : Albert Levy"
         android:textColor="#ffff"
         android:textSize="25dp"
         android:textStyle="italic" />
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:gravity=""
         android:padding="20dp"
-        android:text="Grade&school : 12th ,Amal mekif zain"
+        android:text="Grade/school : 12th ,Amal mekif zain"
         android:textColor="#ffff"
         android:textSize="25dp"
         android:textStyle="italic" />
