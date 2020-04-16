@@ -154,7 +154,6 @@ public class CreateEvent extends AppCompatActivity {
 
     }
 
-
     public boolean onCreateOptionsMenu (Menu menu) {
 
         getMenuInflater().inflate(R.menu.main,menu);
@@ -162,6 +161,8 @@ public class CreateEvent extends AppCompatActivity {
         return true;
 
     }
+
+
 
     public boolean onOptionsItemSelected(MenuItem item){
 

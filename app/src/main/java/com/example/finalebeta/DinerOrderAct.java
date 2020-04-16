@@ -270,7 +270,6 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         ad.show();
     }
 
-
     public boolean onCreateOptionsMenu (Menu menu) {
 
         getMenuInflater().inflate(R.menu.main,menu);
@@ -278,6 +277,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         return true;
 
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item){
 
@@ -293,6 +293,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             Intent t = new Intent(this,Creditim.class);
             startActivity(t);
         }
+
 
         return true;
     }

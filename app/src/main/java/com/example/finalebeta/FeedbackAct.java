@@ -119,7 +119,7 @@ public class FeedbackAct extends AppCompatActivity {
         EVid = String.valueOf(EventID);
 
 
-        if (rb1.isChecked()) rate = "1";
+        if (rb1.isChecked()) rate = "1";                   //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
         if (rb2.isChecked()) rate = "2";
         if (rb3.isChecked()) rate = "3";
         if (rb4.isChecked()) rate = "4";
@@ -139,7 +139,7 @@ public class FeedbackAct extends AppCompatActivity {
                     userUID = user.getUid();
                     UO = dataTMP1.getArrUO();
 
-                    name = UO.get(pos).getName();
+                    name = UO.get(pos).getName();                     //מושך את כל הנתונים שבUSERORDER של אותו סועד ספציפי כדי שאחר כך אאעדכן את הנתונים החדשים עם הנתונים הקודמים
                     MoneyP = UO.get(pos).getMoneyPEID();
                     change = UO.get(pos).getChange();
                     sum = UO.get(pos).getTotalprice();
@@ -162,7 +162,7 @@ public class FeedbackAct extends AppCompatActivity {
 
         melel = FBet.getText().toString();
 
-        tv.setText(melel);
+        tv.setText(melel);                                         //שם במשתנה סטרינג את על מלל המשוב שנתן סועד
 
         FBet.setText("");
     }
@@ -170,7 +170,7 @@ public class FeedbackAct extends AppCompatActivity {
     private void choosepic () {
 
         Intent si = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
         startActivityForResult(si, Gallery);
     }
 

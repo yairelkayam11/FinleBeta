@@ -2,4 +2,5 @@
 <resources>
 
     <item name="EditName" type="id" />
+    <item name="pb" type="id" />
 </resources>

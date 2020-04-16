@@ -140,9 +140,6 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
     }
 
-
-
-
     public boolean onCreateOptionsMenu (Menu menu) {
 
         getMenuInflater().inflate(R.menu.main,menu);
@@ -150,6 +147,8 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         return true;
 
     }
+
+
 
      public boolean onOptionsItemSelected(MenuItem item){
 

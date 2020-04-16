@@ -64,10 +64,12 @@ public class SignInACT extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);    //   פעולה של stayconnected שלאחר סימון "זכור אותי"
         Boolean isChecked=settings.getBoolean("stayConnect",false);
+        Intent si = new Intent(SignInACT.this,AddEventACT.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
+           // startActivity(si);
         }
     }
 
