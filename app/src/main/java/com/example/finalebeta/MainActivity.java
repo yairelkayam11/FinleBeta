@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent t = new Intent(this,SignInACT.class);
+        Intent t = new Intent(this,SignInACT.class); // מסך ראשוני שמטרתו לעשות מעבר של מסך בפתיחת האפליקציה
         startActivity(t);
 
 

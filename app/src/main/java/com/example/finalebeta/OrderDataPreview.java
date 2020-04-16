@@ -97,6 +97,9 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         adp = new ArrayAdapter<>(OrderDataPreview.this,R.layout.support_simple_spinner_dropdown_item, Ast);
         lv3.setAdapter(adp);
 
+        lv3.setOnItemClickListener(this);
+        lv3.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
 
 
         NameID = getIntent().getExtras().getString("key");
@@ -104,7 +107,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         Query query = refEvnts.orderByChild("id").equalTo(EventID);
 
-        query.addListenerForSingleValueEvent(vel);
+        query.addListenerForSingleValueEvent(vel);      //מיון לפי אירוע שנכנסו אליו
 
 
          EVid = String.valueOf(EventID);
@@ -139,7 +142,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                         j=i;
                     }
                 }
-                name = UO.get(j).getName();
+                name = UO.get(j).getName();             //משיכת כל הנתונים של הזמנה של סועד j
                  MoneyP = UO.get(j).getMoneyPEID();
                 change = UO.get(j).getChange();
                 sum = UO.get(j).getTotalprice();
@@ -173,17 +176,17 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         EditName.setVisibility(View.VISIBLE);
         btn6.setVisibility(View.VISIBLE);
-        btnCancelName.setVisibility(View.VISIBLE);
+        btnCancelName.setVisibility(View.VISIBLE);  // פתיחת אופציה לעדכון שם
 
         EditName.setHint("Order name :");
 
     }
     public void ApplyName (View view) {
 
-        name = EditName.getText().toString();
+        name = EditName.getText().toString();     //
 
         if (name.isEmpty()) {
-            Toast.makeText(OrderDataPreview.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(OrderDataPreview.this, "You must enter diner name", Toast.LENGTH_SHORT).show();      //יישום השם החדש
         }
         else {
             tv2.setText("Order summary of" + " " + name);
@@ -195,7 +198,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     }
     public void cancelName (View view) {
 
-        EditName.setVisibility(View.INVISIBLE);
+        EditName.setVisibility(View.INVISIBLE);          //ביטול אופציית עריכת שם
         btn6.setVisibility(View.INVISIBLE);
         btnCancelName.setVisibility(View.INVISIBLE);
 
@@ -206,7 +209,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         ETdish.setVisibility(View.VISIBLE);
         ETprice.setVisibility(View.VISIBLE);
         btn3.setVisibility(View.VISIBLE);
-        btncancelDish.setVisibility(View.VISIBLE);
+        btncancelDish.setVisibility(View.VISIBLE);         //פתחית אופצייה ללהוספת מנה
         ETdish.setHint("food name :");
         ETprice.setHint("price :");
     }
@@ -216,14 +219,13 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         dish = ETdish.getText().toString();
         price = Float.parseFloat(ETprice.getText().toString());
 
-        if (dish.isEmpty()||ETprice.getText().toString().isEmpty()) {
+        if (dish.isEmpty()||ETprice.getText().toString().isEmpty()) {         //הוספת מנה
 
             Toast.makeText(OrderDataPreview.this, "you must enter price or dish name ", Toast.LENGTH_SHORT).show();
 
-            flag = 0;
+
         }
 
-         if (flag==1) {
              sum = sum + price;
              Ssum = String.valueOf(sum);
 
@@ -235,17 +237,17 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
              btncancelDish.setVisibility(View.INVISIBLE);
              ETdish.setText("");
              ETprice.setText("");
-             Ast.add(dish + " - " + price);
+             Ast.add(dish + " - " + price);  // עדכון המחיר לאחר הוספת מנה
              adp.notifyDataSetChanged();
 
              Tvtotalprice.setText("Total price :" + Ssum);
-         }
+
 
     }
     public void cancelDish (View view) {
 
         ETdish.setVisibility(View.INVISIBLE);
-        ETprice.setVisibility(View.INVISIBLE);
+        ETprice.setVisibility(View.INVISIBLE);    //ביטול אופציית הוספת מנה
         btn3.setVisibility(View.INVISIBLE);
         btncancelDish.setVisibility(View.INVISIBLE);
     }
@@ -254,7 +256,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         ETmoney.setVisibility(View.VISIBLE);
         btn7.setVisibility(View.VISIBLE);
-        btncancelMP.setVisibility(View.VISIBLE);
+        btncancelMP.setVisibility(View.VISIBLE);        //אפשרות לעריכת סכום לתשלום
         ETmoney.setHint("Money peid :");
     }
     public void ApplyMoney (View view) {
@@ -263,7 +265,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         k = ETmoney.getText().toString();
         if (k.isEmpty()) Toast.makeText(OrderDataPreview.this, "You must enter money peid", Toast.LENGTH_SHORT).show();
         Smp = String.valueOf(MoneyP);
-        TVmoneypeid.setText("Money peid :"+Smp);
+        TVmoneypeid.setText("Money peid :"+Smp);            //שינוי סכום לתשלום
         ETmoney.setVisibility(View.INVISIBLE);
         btn7.setVisibility(View.INVISIBLE);
         btncancelMP.setVisibility(View.INVISIBLE);
@@ -277,7 +279,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     public void cancelMP (View view) {
 
         ETmoney.setVisibility(View.INVISIBLE);
-        btn7.setVisibility(View.INVISIBLE);
+        btn7.setVisibility(View.INVISIBLE);             //ביטול אופציית עריכה סכום לתשלום
         btncancelMP.setVisibility(View.INVISIBLE);
 
     }
@@ -285,16 +287,20 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
+        sum = sum - (dataTMP1.getArrUO().get(pos).getArrDP().get(position).getPrice());
+
+        Tvtotalprice.setText(""+sum);
+
         adb=new AlertDialog.Builder(this);
-        adb.setTitle("fdjkl");
         adb.setMessage("Do you want to delete this dish?");
-       /* adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {                //בלחיצה על איבר ברשימת המנות נפתחת אםשרות להסיר מנה ואחרי זה עדכון התשום
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
 
-
-                refEvnts.child(String.valueOf(t)).child("arrUO").child("arrDP").child(""+position).removeValue();
+                ARRDP.remove(position);
+                dataTMP1.getArrUO().get(pos).setArrDP(ARRDP);
+                refEvnts.child(""+EventID).setValue(dataTMP1);
 
                 Ast.remove(position);
                 adp.notifyDataSetChanged();
@@ -308,7 +314,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                 dialog.cancel();
             }
         });
-        */
+
 
         AlertDialog ad = adb.create();
         ad.show();
@@ -319,7 +325,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,null);
 
-        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);
+        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);                           //שמירת השינויים ועידכונם בפיירבייס
 
 
 
@@ -329,7 +335,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void DeletOrder (View view) {
 
-        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();
+        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();                  //כפתור למחיקת הזמנה
 
         Intent t = new Intent(this,OrderAct.class);
         startActivity(t);

@@ -13,12 +13,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,22 +32,27 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import java.io.IOException;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.example.finalebeta.AddEventACT.EventID;
+import static com.example.finalebeta.FBref.FBST;
 import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
 import static com.example.finalebeta.FBref.refImages;
+import static com.example.finalebeta.FBref.refStor;
 
 public class FeedbackAct extends AppCompatActivity {
 
     RadioButton rb1,rb2,rb3,rb4,rb5;
-    Button btnUpload,btnChoose,btnSave,btnSend;
+    Button btnUpload,btnChoose;
+    Button  btnSave,btnSend;
     EditText FBet;
     String rate,melel;
     TextView tv;
@@ -61,6 +68,8 @@ public class FeedbackAct extends AppCompatActivity {
     int pos;
     String EVid;
     String FB;
+    ImageView iV;
+    Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +89,30 @@ public class FeedbackAct extends AppCompatActivity {
         tv=(TextView) findViewById(R.id.tv);
         UO = new ArrayList<UserOrder>();
         ARRDP = new ArrayList<DishPrice>();
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    upload();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                choosepic();
+
+            }
+        });
+
+
 
         pos = getIntent().getExtras().getInt("key3");
 
@@ -134,13 +167,12 @@ public class FeedbackAct extends AppCompatActivity {
         FBet.setText("");
     }
 
-    public void choosepic (View view) {
+    private void choosepic () {
 
         Intent si = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(si, Gallery);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -174,29 +206,34 @@ public class FeedbackAct extends AppCompatActivity {
         }
     }
 
-    public void upload (View view) throws IOException {
 
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Image download","downloading...",true);
+    private void upload() throws IOException {
 
-            StorageReference refImg = refImages.child("aaa.jpg");
+        final ProgressDialog pd=ProgressDialog.show(this,"Image download","downloading...",true);
 
-            final File localFile = File.createTempFile("aaa","jpg");
-            refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    pd.dismiss();
-                    Toast.makeText(FeedbackAct.this, "Image download success", Toast.LENGTH_LONG).show();
-                    String filePath = localFile.getPath();
-                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    pd.dismiss();
-                    Toast.makeText(FeedbackAct.this, "Image download failed", Toast.LENGTH_LONG).show();
-                }
-            });
+        StorageReference refImg = refImages.child("aaa.jpg");
+
+        final File localFile = File.createTempFile("aaa","jpg");
+        refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                pd.dismiss();
+                Toast.makeText(FeedbackAct.this, "Image download success", Toast.LENGTH_LONG).show();
+                String filePath = localFile.getPath();
+                //Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                //iV.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                pd.dismiss();
+                Toast.makeText(FeedbackAct.this, "Image download failed", Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
         }
 
         public void save (View view) {

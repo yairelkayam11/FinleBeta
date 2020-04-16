@@ -46,7 +46,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="17dp"
+        android:layout_height="11dp"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -62,40 +62,49 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <RadioButton
-            android:id="@+id/rb1"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1" />
+            android:orientation="horizontal">
 
-        <RadioButton
-            android:id="@+id/rb2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2" />
+            <RadioButton
+                android:id="@+id/rb1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1" />
 
-        <RadioButton
-            android:id="@+id/rb3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="3" />
+            <RadioButton
+                android:id="@+id/rb2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2" />
 
-        <RadioButton
-            android:id="@+id/rb4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="4" />
+            <RadioButton
+                android:id="@+id/rb3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="3" />
 
-        <RadioButton
-            android:id="@+id/rb5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="5" />
+            <RadioButton
+                android:id="@+id/rb4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="4" />
+
+            <RadioButton
+                android:id="@+id/rb5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="5" />
+        </RadioGroup>
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +114,7 @@
 
         <TextView
             android:id="@+id/textView18"
-            android:layout_width="38dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -119,7 +128,7 @@
 
         <TextView
             android:id="@+id/textView20"
-            android:layout_width="245dp"
+            android:layout_width="248dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -166,6 +175,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
         android:orientation="horizontal">
 
 
@@ -200,7 +210,7 @@
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
-        android:layout_height="186dp"
+        android:layout_height="174dp"
         android:gravity="center"
         android:textColor="#52527a"
         android:textSize="17dp"
@@ -217,19 +227,17 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
-        android:layout_height="31dp"
-        android:textSize="17dp"
-        android:textColor="#52527a"
-        android:textStyle="italic"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Share us with photos of ypur experience " />
+        android:text="Share us with photos of ypur experience "
+        android:textColor="#52527a"
+        android:textSize="17dp"
+        android:textStyle="italic" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
+        android:layout_width="423dp"
+        android:layout_height="33dp"
+        android:orientation="vertical" />
 
     <Button
     android:id="@+id/btnChoose"
@@ -238,7 +246,6 @@
     android:layout_gravity="center"
     android:background="@drawable/button2_rouns"
     android:text="CHoose a picture"
-    android:onClick="choosepic"
     android:textColor="#ffff" />
 
     <LinearLayout
@@ -253,7 +260,6 @@
         android:layout_width="119dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
-        android:onClick="upload"
         android:background="@drawable/button2_rouns"
         android:text="Upload"
         android:textColor="#ffff" />

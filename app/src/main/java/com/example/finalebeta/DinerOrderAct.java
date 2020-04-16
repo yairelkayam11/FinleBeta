@@ -94,6 +94,8 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         arrST = new ArrayList<String>();
         adp = new ArrayAdapter<String>(DinerOrderAct.this , R.layout.support_simple_spinner_dropdown_item, arrST);
         lv.setAdapter(adp);
+        lv.setOnItemClickListener(this);
+        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
 
@@ -104,7 +106,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         Query query = refEvnts
                 .orderByChild("id")
                 .equalTo(t);
-        query.addListenerForSingleValueEvent(vel);
+        query.addListenerForSingleValueEvent(vel);     //סינון האירועים לפי הID של אותו אירוע כדי שנוכל לשמור את הuid של האדם שפתח את ההזמנה
 
 
 
@@ -123,7 +125,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
                     //Useruid = datUsers.getUid();
 
-                    FirebaseUser user = refAuth.getCurrentUser();
+                    FirebaseUser user = refAuth.getCurrentUser();  //שמירת הUID של הuser הנוכחי
                     Useruid = user.getUid();
 
                 }
@@ -145,7 +147,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
         ETname.setText("");
 
-        if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
+        if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();  //הזנת שם סועד
 
     }
 
@@ -155,13 +157,10 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
 
                 dish = et2.getText().toString();
-                price = Float.parseFloat(et3.getText().toString());
+                price = Float.parseFloat(et3.getText().toString());         //הוספת מנות
                 g = et3.getText().toString();
 
-                if (dish.isEmpty()||g.isEmpty()) {
-                    Toast.makeText(DinerOrderAct.this, "you must enter price or dish name ", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (!dish.isEmpty()&&!g.isEmpty()){
 
                     sum = sum + price;
 
@@ -183,23 +182,17 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
                     et3.setText("");
                 }
 
+
+                  if (dish.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter dish name ", Toast.LENGTH_SHORT).show();
+                  if (g.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter price  ", Toast.LENGTH_SHORT).show();
+
             }
-
-
-
-
-
-
-
-
-
-
 
 
     public void finish (View view) {
 
 
-        STRMoneyP = et14.getText().toString();
+        STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
 
         MoneyP = Double.valueOf((STRMoneyP));
 
@@ -216,15 +209,12 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
 
             ArrUO = dataTMP.getArrUO();
-            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,null);
+            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,null);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
 
             ArrUO.add(uo);
 
             dataTMP.setArrUO(ArrUO);
             refEvnts.child("" + t).setValue(dataTMP);
-
-
-
 
 
         //refEvnts.child(""+t).child("DinerOrder").child("" + namee).setValue(ArrUO);
@@ -245,15 +235,28 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         AlertDialog.Builder adb = new AlertDialog.Builder(DinerOrderAct.this);
         adb.setCancelable(false);
         adb.setMessage("Do you want to delete this dish?");
-        adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {               //לחיצה על איבר/ מנה שהרשימה של המנות שנוספו פותחת אפשרות להסיר אותה ובכך יתעדכן המחיר של הזמנה של סועד יחיד
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
 
-                refEvnts.child("DinerOrder").child(String.valueOf(FriendsSum)).child("arrDP").child(String.valueOf(position)).removeValue();
+                sum = sum - (ArrDP.get(position).getPrice()) ;
 
-                arrST.remove(position);
-                adp.notifyDataSetChanged();
+                ArrDP.remove(position);                                //מחיקת המנה מרשימת מסוג דיש פרייס , מחיקת כל רשימת השמות של המנות שמופיעה בליסטוויו ויצירת רישמה זו מחדש ללא המנה שהסרנו
+                tv18.setText(""+sum);
+
+                arrST.clear();
+                for (int i = 0;i<ArrDP.size();i++){
+
+                    String str = dish + " - " + price;
+
+                    arrST.add(str);
+                }
+
+                adp = new ArrayAdapter<String>(DinerOrderAct.this , R.layout.support_simple_spinner_dropdown_item, arrST);
+                lv.setAdapter(adp);
+
+
 
             }
         });

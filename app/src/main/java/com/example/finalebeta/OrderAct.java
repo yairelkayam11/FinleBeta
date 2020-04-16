@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +39,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     Button btn;
     ArrayAdapter adp;
     ListView lv;
+    TextView TVtip;
     int i = 0;
     UserOrder dataa;
     String dataaName;
@@ -45,6 +47,8 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     Evnts dataTMP;
     User Useruid;
     String userUID,SavedUID;
+    double tip;
+    double allprice;
   //  UserOrder yair;
 
 
@@ -54,7 +58,6 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
     ArrayList<String> Ast = new ArrayList<String>();
     ArrayList<UserOrder> UO = new ArrayList<UserOrder>();
-    ArrayList<UserOrder> yair = new ArrayList<UserOrder>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         setContentView(R.layout.activity_order);
 
         btn=(Button)findViewById(R.id.btn);
+        TVtip=(TextView) findViewById(R.id.TVtip);
         lv = (ListView)findViewById(R.id.lv2);
         lv.setOnItemClickListener (this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -70,10 +74,11 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
 
 
+
         Query query = refEvnts
                 .orderByChild("id")
                 .equalTo(EventID);
-        query.addListenerForSingleValueEvent(vel);
+        query.addListenerForSingleValueEvent(vel);   //פעולה שמסננת וציגה רק את ההזמנות של אותו אירוע שנכנסו אליו ושID שלו הוא אותו ID שח האירוע שבחרו
 
 
     }
@@ -88,20 +93,28 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
                     dataTMP = data.getValue(Evnts.class);
 
 
-                    FirebaseUser user = refAuth.getCurrentUser();
+                    FirebaseUser user = refAuth.getCurrentUser();  //קיראה מהדאטאבייס ומכניסה למשתמש את הUID של המשתמש שיצר הזמנה
                     userUID = user.getUid();
 
 
                     if (dataTMP.getArrUO().isEmpty()) {
 
-                        Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();//אם עדיין לאנפצחו הזמנות באותו אירוע זה כותה שאין הזמנות עדיין
                     }
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
+                        for (int k =0; k < dataTMP.getArrUO().get(j).getArrDP().size();k++) {
 
-                        Ast.add( "The order of : "+dataTMP.getArrUO().get(j).getName());
+                            allprice = allprice + (dataTMP.getArrUO().get(j).getArrDP().get(k).getPrice());  // מכניסה לתוך רשימה מטיפוס UserOrder את כל המידע של הזמנות שנקראו ומציגה את שם המסועד ברשימה + סכימת כל התשלום של ההזמנה הכוללת
+
+                        }
+                        Ast.add("The order of : " + dataTMP.getArrUO().get(j).getName());
                         UO.add(dataTMP.getArrUO().get(j));
 
                     }
+
+                    tip = allprice*0.12;  // פעולה לחישוב טיפ שנהוג לתת
+                    TVtip.setText("Tip :"+ tip);
+
 
                 }
             }
@@ -120,7 +133,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     public void AddDiner (View view) {
 
 
-        Intent t = new Intent(this,DinerOrderAct.class);
+        Intent t = new Intent(this,DinerOrderAct.class);  //פעולת כפתור שמעבירה למסך שבו יוצרים הזמנה
         t.putExtra("key",pos);
         startActivity(t);
 
@@ -165,11 +178,11 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
             if (SavedUID.equals(userUID)) {
 
-                dataa = UO.get(position);
+                dataa = UO.get(position);                                          // כאשר לוחצים על הזמנה שנפתחה יש אפשרות רק לאותו user שפתח אותה לעבור למסך עריכת הזמנה
                 dataaName = dataa.getName();
 
 
-                Intent t = new Intent(this,OrderDataPreview.class);
+                Intent t = new Intent(this,OrderDataPreview.class);  // שלחית נתונים של שם סועד ומיקומו ברשימה
                 t.putExtra("key",dataaName);
                 t.putExtra("key2",position);
                 startActivity(t);
@@ -177,7 +190,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
             }
             else {
 
-                Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show();
+                Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show(); // כאשר אדם מנשה להגיע למסך עריכה של הזמנה שלא הקים יקבל הודעה זו
 
             }
 

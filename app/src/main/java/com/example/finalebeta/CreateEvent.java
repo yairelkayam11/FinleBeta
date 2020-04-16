@@ -66,7 +66,7 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                c = Calendar.getInstance();
+                c = Calendar.getInstance();           // דייטפיקר יוצרת לוח שנה שבו בוחרים תאריך
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 int month = c.get(Calendar.MONTH);
                 int year = c.get(Calendar.YEAR);
@@ -85,7 +85,7 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
-        TimeBtn.setOnClickListener(new View.OnClickListener() {
+        TimeBtn.setOnClickListener(new View.OnClickListener() {  //טייםפיקר יוצרת שעון שבו בוחרים שעה
             @Override
             public void onClick(View view) {
 
@@ -106,7 +106,7 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
-        ValueEventListener listener = new ValueEventListener()
+        ValueEventListener listener = new ValueEventListener() // פעולה שקוראת מידע מהפיירבייס וסוכמת את מספר הילדים לשימוש של יצירת ID לכל אירוע
         {
 
             @Override
@@ -142,7 +142,7 @@ public class CreateEvent extends AppCompatActivity {
         t = IDD;
 
 
-        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {
+        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {//דיחפת כל הנתונים שהזינו בשדות יצרית עצם בדאטאבייס
 
             evnt = new Evnts(IDD, place, name, date, time, Epass, Active,null);
             refEvnts.child(""+t).setValue(evnt);

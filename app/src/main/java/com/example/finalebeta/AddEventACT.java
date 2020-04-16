@@ -54,10 +54,10 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         Calendar calendar = Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
+        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()); //פעוולה שמביאה את התאריך של היום
         currentDate = currentDate.replace('.','/');
 
-        Query query =  refEvnts.orderByChild("date").equalTo(currentDate);
+        Query query =  refEvnts.orderByChild("date").equalTo(currentDate);      // סינון אירועים שמופיעים לפי התאריך של אותו יום
         query.addListenerForSingleValueEvent(listener);
 
     }
@@ -72,7 +72,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             IDlist.clear();
             Values.clear();
 
-            for(DataSnapshot data : ds.getChildren()) {
+            for(DataSnapshot data : ds.getChildren()) {              //פעולה שקוראת מהפיירבייס את האירועים ודוחפת את הנתונים שלהם לתוך רשימה מטיפוס אירוע ומציגה את שם האירוע על ליסטויו
 
                 Evnts dataTMP1 = data.getValue(Evnts.class);
                 Values.add(dataTMP1);
@@ -89,7 +89,6 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            Toast.makeText(AddEventACT.this, "There is no open event today", Toast.LENGTH_SHORT).show();
 
         }
     };
@@ -111,7 +110,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {  //פעולה שכאשר לוחצים על איבר/אירוע ברשימה נפתח אלרטדיאלוג שדורש להזין סיסמה יחודית לאותו אירוע
 
         dataa = Values.get(position);
         EventID  = dataa.getID();
