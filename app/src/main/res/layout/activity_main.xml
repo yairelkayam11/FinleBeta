@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textStyle="italic"
-        android:text="i Order"
+        android:textStyle="bold"
+        android:text="iOrder"
         android:textColor="#ff6666
 "
         android:textSize="30dp" />

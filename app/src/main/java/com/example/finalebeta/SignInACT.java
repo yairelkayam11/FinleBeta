@@ -82,7 +82,7 @@ public class SignInACT extends AppCompatActivity {
     }
 
     private void regoption() {
-        SpannableString ss = new SpannableString("Don't have an account?  Register here!");
+        SpannableString ss = new SpannableString("Don't have an account?  Register here!");      //פעולה שנמצאת במסך ההתחברות שכאשר לוחצים על register here היא חושפת מסך הרשמה
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -100,7 +100,7 @@ public class SignInACT extends AppCompatActivity {
     }
 
     private void logoption() {
-        SpannableString ss = new SpannableString("Already have an account?  Login here!");
+        SpannableString ss = new SpannableString("Already have an account?  Login here!");     //פעולה שנמצאת במסך ההרשמה שכאשר לוחצים עליה היא מחזירה למסך התחברות
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -123,7 +123,7 @@ public class SignInACT extends AppCompatActivity {
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);
+            final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);        //לאחר לחציה על login יש טעינה ושלוח לAuth שהתחבר משתמש
             refAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -150,7 +150,7 @@ public class SignInACT extends AppCompatActivity {
             email=eTemail.getText().toString();
             password=eTpass.getText().toString();
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);
+            final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);           //טעינה של הרשמה
             refAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -165,7 +165,7 @@ public class SignInACT extends AppCompatActivity {
                                 FirebaseUser user = refAuth.getCurrentUser();
                                 uid = user.getUid();
                                 userdb=new User(name,email,phone,uid);
-                                refUsers.child(name).setValue(userdb);
+                                refUsers.child(name).setValue(userdb);                            //יצירה של ילד תחת ענף Users
                                 Toast.makeText(SignInACT.this, "Successful registration", Toast.LENGTH_LONG).show();
                                 Intent si = new Intent(SignInACT.this,AddEventACT.class);
                                 startActivity(si);

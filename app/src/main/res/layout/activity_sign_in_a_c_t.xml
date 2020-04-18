@@ -40,12 +40,19 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
+
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="148dp"
-            android:layout_height="124dp"
+            android:id="@+id/imageView8"
+            android:layout_width="104dp"
+            android:layout_height="91dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/loginnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" />
+            android:src="@drawable/login"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
 
         <EditText
             android:id="@+id/eTname"
@@ -53,7 +60,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:visibility="invisible"
-            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/guest"
+            android:paddingLeft="5dp"
             android:textStyle="bold"
             android:background="@drawable/edittext_rouns"
             android:ems="10"
@@ -70,11 +79,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:drawablePadding="10dp"
             android:background="@drawable/edittext_rouns"
+            android:drawableLeft="@drawable/mail"
+            android:paddingLeft="5dp"
             android:ems="10"
             android:hint="e-mail"
             android:inputType="textEmailAddress"
-            android:paddingLeft="20dp"
+
             android:textStyle="bold" />
 
         <Space
@@ -91,7 +103,9 @@
             android:ems="10"
             android:hint="password"
             android:inputType="textPassword"
-            android:paddingLeft="20dp"
+            android:drawableLeft="@drawable/key"
+            android:drawablePadding="10dp"
+            android:paddingLeft="5dp"
             android:textStyle="bold" />
 
         <Space
@@ -105,7 +119,9 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:textStyle="bold"
-            android:paddingLeft="20dp"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/phone"
+            android:paddingLeft="5dp"
             android:visibility="invisible"
             android:background="@drawable/edittext_rouns"
             android:ems="10"

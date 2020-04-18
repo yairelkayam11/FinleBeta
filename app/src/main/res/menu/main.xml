@@ -30,10 +30,6 @@
         android:title="Feedback"
         android:orderInCategory="500"/>
 
-    <item
-        android:id="@+id/logout"
-        android:title="Logout"
-        android:orderInCategory="600"/>
 
 
 </menu>

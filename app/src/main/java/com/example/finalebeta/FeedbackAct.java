@@ -30,8 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -42,11 +45,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static com.example.finalebeta.AddEventACT.EventID;
-import static com.example.finalebeta.FBref.FBST;
 import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
-import static com.example.finalebeta.FBref.refImages;
-import static com.example.finalebeta.FBref.refStor;
+
 
 public class FeedbackAct extends AppCompatActivity {
 
@@ -54,7 +55,8 @@ public class FeedbackAct extends AppCompatActivity {
     Button btnUpload,btnChoose;
     Button  btnSave,btnSend;
     EditText FBet;
-    String rate,melel;
+    String melel;
+    int rate;
     TextView tv;
     int Gallery=1;
     ArrayList<DishPrice> ARRDP;
@@ -69,6 +71,9 @@ public class FeedbackAct extends AppCompatActivity {
     String EVid;
     String FB;
     ImageView iV;
+    String PlaceName;
+    FirebaseStorage storage;
+    StorageReference storageReference;
     Uri filePath;
 
     @Override
@@ -89,6 +94,12 @@ public class FeedbackAct extends AppCompatActivity {
         tv=(TextView) findViewById(R.id.tv);
         UO = new ArrayList<UserOrder>();
         ARRDP = new ArrayList<DishPrice>();
+
+
+
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,11 +130,7 @@ public class FeedbackAct extends AppCompatActivity {
         EVid = String.valueOf(EventID);
 
 
-        if (rb1.isChecked()) rate = "1";                   //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
-        if (rb2.isChecked()) rate = "2";
-        if (rb3.isChecked()) rate = "3";
-        if (rb4.isChecked()) rate = "4";
-        if (rb5.isChecked()) rate = "5";
+
 
         ValueEventListener listener = new ValueEventListener()
         {
@@ -139,6 +146,8 @@ public class FeedbackAct extends AppCompatActivity {
                     userUID = user.getUid();
                     UO = dataTMP1.getArrUO();
 
+
+                    PlaceName = dataTMP1.getPlace();
                     name = UO.get(pos).getName();                     //מושך את כל הנתונים שבUSERORDER של אותו סועד ספציפי כדי שאחר כך אאעדכן את הנתונים החדשים עם הנתונים הקודמים
                     MoneyP = UO.get(pos).getMoneyPEID();
                     change = UO.get(pos).getChange();
@@ -169,81 +178,85 @@ public class FeedbackAct extends AppCompatActivity {
 
     private void choosepic () {
 
-        Intent si = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);        //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
-        startActivityForResult(si, Gallery);
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);
+
+        //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Gallery) {
-                Uri file = data.getData();
-                if (file != null) {
-                    final ProgressDialog pd=ProgressDialog.show(this,"Upload image","Uploading...",true);
-                    StorageReference refImg = refImages.child("aaa.jpg");
-                    refImg.putFile(file)
-                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    pd.dismiss();
-                                    Toast.makeText(FeedbackAct.this, "Image Uploaded", Toast.LENGTH_LONG).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    pd.dismiss();
-                                    Toast.makeText(FeedbackAct.this, "Upload failed", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                } else {
-                    Toast.makeText(this, "No Image was selected", Toast.LENGTH_LONG).show();
-                }
+        if(requestCode == 1 && resultCode == RESULT_OK && data!=null && data.getData()!=null){
+
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+            //    iV.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }
+
     }
 
 
 
     private void upload() throws IOException {
 
-        final ProgressDialog pd=ProgressDialog.show(this,"Image download","downloading...",true);
+        if(filePath!=null) {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
 
-        StorageReference refImg = refImages.child("aaa.jpg");
+            StorageReference reference =  storageReference.child(""+PlaceName+"/"+Useruid);
+            reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(FeedbackAct.this, "Image Uploaded", Toast.LENGTH_LONG);
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
 
-        final File localFile = File.createTempFile("aaa","jpg");
-        refImg.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                pd.dismiss();
-                Toast.makeText(FeedbackAct.this, "Image download success", Toast.LENGTH_LONG).show();
-                String filePath = localFile.getPath();
-                //Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                //iV.setImageBitmap(bitmap);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                pd.dismiss();
-                Toast.makeText(FeedbackAct.this, "Image download failed", Toast.LENGTH_LONG).show();
-            }
-        });
+                    double progres = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded "+(int)progres+"%");
+
+                }
+            });
+
+
+        }
 
 
 
         }
 
-        public void save (View view) {
+        public void save (View view) { //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
+
+            if (rb1.isChecked()) rate = 1;
+            if (rb2.isChecked()) rate = 2;
+            if (rb3.isChecked()) rate = 3;
+            if (rb4.isChecked()) rate = 4;
+            if (rb5.isChecked()) rate = 5;
+
+            if (rate==0) {
+
+                Toast.makeText(FeedbackAct.this, "Please ", Toast.LENGTH_LONG);
+            }
 
              FB = tv.getText().toString();
 
 
             UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,FB,rate);
 
-            refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);
+            refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
 
             Intent t = new Intent(this,OrderAct.class);
             startActivity(t);

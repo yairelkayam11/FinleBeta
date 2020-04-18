@@ -323,7 +323,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void back (View view) {
 
-        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,null);
+        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,0);
 
         refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);                           //שמירת השינויים ועידכונם בפיירבייס
 

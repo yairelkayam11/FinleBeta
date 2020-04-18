@@ -142,7 +142,7 @@ public class CreateEvent extends AppCompatActivity {
         t = IDD;
 
 
-        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {//דיחפת כל הנתונים שהזינו בשדות יצרית עצם בדאטאבייס
+        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {    //דיחפת כל הנתונים שהזינו בשדות יצרית עצם בדאטאבייס
 
             evnt = new Evnts(IDD, place, name, date, time, Epass, Active,null);
             refEvnts.child(""+t).setValue(evnt);

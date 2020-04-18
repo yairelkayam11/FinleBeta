@@ -11,13 +11,13 @@ public class UserOrder {
     private Double MoneyPEID;
     private String Useruid;
     private String Feedback;
-    private String Rate;
+    private int Rate;
 
     public UserOrder(String name, DishPrice ArrDP){}
 
     public UserOrder(){}
 
-    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid,String Feedback,String Rate) {
+    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid,String Feedback,int Rate) {
 
         this.name = name;
         this.ArrDP = ArrDP;
@@ -86,11 +86,11 @@ public class UserOrder {
         Feedback = feedback;
     }
 
-    public String getRate() {
+    public int getRate() {
         return Rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(int rate) {
         Rate = rate;
     }
 }

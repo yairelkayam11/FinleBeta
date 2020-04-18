@@ -209,7 +209,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
 
             ArrUO = dataTMP.getArrUO();
-            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,null);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
+            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,0);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
 
             ArrUO.add(uo);
 
