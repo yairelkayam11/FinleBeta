@@ -117,7 +117,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         AlertDialog.Builder adb;
         adb = new AlertDialog.Builder(this);
         adb.setCancelable(false);
-        adb.setTitle("Put the password of "+dataa.getName());
+        adb.setTitle("Put the password of " + dataa.getName());
         final EditText et = new EditText(this);
         et.setHint("Enter password :");
         adb.setView(et);

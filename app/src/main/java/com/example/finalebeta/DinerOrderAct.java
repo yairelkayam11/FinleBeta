@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.EventLog;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -156,11 +157,13 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             public void AddDishPrice(View v) {
 
 
-                dish = et2.getText().toString();
-                price = Float.parseFloat(et3.getText().toString());         //הוספת מנות
-                g = et3.getText().toString();
+                         //הוספת מנות
 
-                if (!dish.isEmpty()&&!g.isEmpty()){
+                if (!TextUtils.isEmpty(et2.getText().toString())&&!TextUtils.isEmpty(et3.getText().toString()))
+                {
+
+                    dish = et2.getText().toString();
+                    price = Float.parseFloat(et3.getText().toString());
 
                     sum = sum + price;
 
@@ -183,8 +186,8 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
                 }
 
 
-                  if (dish.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter dish name ", Toast.LENGTH_SHORT).show();
-                  if (g.isEmpty()) Toast.makeText(DinerOrderAct.this, "you must enter price  ", Toast.LENGTH_SHORT).show();
+                  if (TextUtils.isEmpty(et2.getText().toString())) Toast.makeText(DinerOrderAct.this, "you must enter dish name ", Toast.LENGTH_SHORT).show();
+                  if (TextUtils.isEmpty(et3.getText().toString())) Toast.makeText(DinerOrderAct.this, "you must enter price  ", Toast.LENGTH_SHORT).show();
 
             }
 
@@ -192,7 +195,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
     public void finish (View view) {
 
 
-        STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
+     /*   STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
 
         MoneyP = Double.valueOf((STRMoneyP));
 
@@ -200,13 +203,19 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         change = MoneyP-sum;
 
         Schange = String.valueOf(change);
-        tv17.setText(Schange);
+        tv17.setText(Schange);*/
 
-        if (namee.isEmpty())    Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
-        if (MoneyP==null)   Toast.makeText(DinerOrderAct.this, "You must enter diner money peid", Toast.LENGTH_SHORT).show();
-        if (ArrDP.isEmpty())    Toast.makeText(DinerOrderAct.this, "You must enter an order", Toast.LENGTH_SHORT).show();
+        if (ArrDP.size()!=0&&!TextUtils.isEmpty(et14.getText().toString())&&!TextUtils.isEmpty(namee))
+        {
+            STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
+
+            MoneyP = Double.valueOf((STRMoneyP));
 
 
+            change = MoneyP-sum;
+
+            Schange = String.valueOf(change);
+            tv17.setText(Schange);
 
             ArrUO = dataTMP.getArrUO();
             UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,0);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
@@ -216,15 +225,25 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             dataTMP.setArrUO(ArrUO);
             refEvnts.child("" + t).setValue(dataTMP);
 
+            Toast.makeText(DinerOrderAct.this, "Your order has been received", Toast.LENGTH_SHORT).show();
 
-        //refEvnts.child(""+t).child("DinerOrder").child("" + namee).setValue(ArrUO);
+            FriendsSum++;
 
-        Toast.makeText(DinerOrderAct.this, "Your order has been received", Toast.LENGTH_SHORT).show();
+            Intent h = new Intent(this,OrderAct.class);
+            startActivity(h);
 
-        FriendsSum++;
+        }
+        else {
 
-        Intent h = new Intent(this,OrderAct.class);
-        startActivity(h);
+            Toast.makeText(DinerOrderAct.this, "You must fill all the fields", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+
+
+
+
 
 
     }

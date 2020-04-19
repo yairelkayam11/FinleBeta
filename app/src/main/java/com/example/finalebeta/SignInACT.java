@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -120,23 +121,23 @@ public class SignInACT extends AppCompatActivity {
 
     public void logorreg(View view) {
         if (registered) {
-            email=eTemail.getText().toString();
-            password=eTpass.getText().toString();
-
-            final ProgressDialog pd=ProgressDialog.show(this,"Login","Connecting...",true);        //לאחר לחציה על login יש טעינה ושלוח לAuth שהתחבר משתמש
+            if(!TextUtils.isEmpty(eTemail.getText().toString()) && !TextUtils.isEmpty(eTpass.getText().toString())) {
+                email = eTemail.getText().toString();
+            password = eTpass.getText().toString();
+            final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);        //לאחר לחציה על login יש טעינה ושלוח לAuth שהתחבר משתמש
             refAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             pd.dismiss();
                             if (task.isSuccessful()) {
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cBstayconnect.isChecked());
+                                SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = settings.edit();
+                                editor.putBoolean("stayConnect", cBstayconnect.isChecked());
                                 editor.commit();
                                 Log.d("MainActivity", "signinUserWithEmail:success");
                                 Toast.makeText(SignInACT.this, "Login Success", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(SignInACT.this,AddEventACT.class);
+                                Intent si = new Intent(SignInACT.this, AddEventACT.class);
                                 startActivity(si);
                             } else {
                                 Log.d("MainActivity", "signinUserWithEmail:fail");
@@ -144,41 +145,55 @@ public class SignInACT extends AppCompatActivity {
                             }
                         }
                     });
-        } else {
-            name=eTname.getText().toString();
-            phone=eTphone.getText().toString();
-            email=eTemail.getText().toString();
-            password=eTpass.getText().toString();
+            }
+            else {
 
-            final ProgressDialog pd=ProgressDialog.show(this,"Register","Registering...",true);           //טעינה של הרשמה
-            refAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            pd.dismiss();
-                            if (task.isSuccessful()) {
-                                SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
-                                SharedPreferences.Editor editor=settings.edit();
-                                editor.putBoolean("stayConnect",cBstayconnect.isChecked());
-                                editor.commit();
-                                Log.d("MainActivity", "createUserWithEmail:success");
-                                FirebaseUser user = refAuth.getCurrentUser();
-                                uid = user.getUid();
-                                userdb=new User(name,email,phone,uid);
-                                refUsers.child(name).setValue(userdb);                            //יצירה של ילד תחת ענף Users
-                                Toast.makeText(SignInACT.this, "Successful registration", Toast.LENGTH_LONG).show();
-                                Intent si = new Intent(SignInACT.this,AddEventACT.class);
-                                startActivity(si);
-                            } else {
-                                if (task.getException() instanceof FirebaseAuthUserCollisionException)
-                                    Toast.makeText(SignInACT.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
-                                else {
-                                    Log.w("MainActivity", "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(SignInACT.this, "User create failed.",Toast.LENGTH_LONG).show();
+                Toast.makeText(SignInACT.this, "You have to fill all the fields", Toast.LENGTH_LONG).show();
+
+            }
+        } else {
+
+            if(!TextUtils.isEmpty(eTemail.getText().toString()) && !TextUtils.isEmpty(eTpass.getText().toString()) &&
+                    !TextUtils.isEmpty(eTphone.getText().toString()) && !TextUtils.isEmpty(eTname.getText().toString())) {
+                name = eTname.getText().toString();
+                phone = eTphone.getText().toString();
+                email = eTemail.getText().toString();
+                password = eTpass.getText().toString();
+
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);           //טעינה של הרשמה
+                refAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                pd.dismiss();
+                                if (task.isSuccessful()) {
+                                    SharedPreferences settings = getSharedPreferences("PREFS_NAME", MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putBoolean("stayConnect", cBstayconnect.isChecked());
+                                    editor.commit();
+                                    Log.d("MainActivity", "createUserWithEmail:success");
+                                    FirebaseUser user = refAuth.getCurrentUser();
+                                    uid = user.getUid();
+                                    userdb = new User(name, email, phone, uid);
+                                    refUsers.child(name).setValue(userdb);                            //יצירה של ילד תחת ענף Users
+                                    Toast.makeText(SignInACT.this, "Successful registration", Toast.LENGTH_LONG).show();
+                                    Intent si = new Intent(SignInACT.this, AddEventACT.class);
+                                    startActivity(si);
+                                } else {
+                                    if (task.getException() instanceof FirebaseAuthUserCollisionException)
+                                        Toast.makeText(SignInACT.this, "User with e-mail already exist!", Toast.LENGTH_LONG).show();
+                                    else {
+                                        Log.w("MainActivity", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(SignInACT.this, "User create failed.", Toast.LENGTH_LONG).show();
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+            }
+            else {
+
+                Toast.makeText(SignInACT.this, "You have to fill all the fields", Toast.LENGTH_LONG).show();
+            }
 
         }
     }

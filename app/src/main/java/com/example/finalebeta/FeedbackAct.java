@@ -246,20 +246,22 @@ public class FeedbackAct extends AppCompatActivity {
             if (rb4.isChecked()) rate = 4;
             if (rb5.isChecked()) rate = 5;
 
-            if (rate==0) {
+            if (rate == 0) {
 
-                Toast.makeText(FeedbackAct.this, "Please ", Toast.LENGTH_LONG);
+                Toast.makeText(FeedbackAct.this, "Please rate the ", Toast.LENGTH_LONG);
             }
+            else {
 
-             FB = tv.getText().toString();
+                FB = tv.getText().toString();
 
 
-            UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,FB,rate);
+                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate);
 
-            refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
+                refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
 
-            Intent t = new Intent(this,OrderAct.class);
-            startActivity(t);
+                Intent t = new Intent(this, OrderAct.class);
+                startActivity(t);
+            }
 
         }
 
