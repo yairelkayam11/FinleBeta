@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -69,12 +70,13 @@ public class FeedbackAct extends AppCompatActivity {
     Double sum,MoneyP,change;
     int pos;
     String EVid;
-    String FB;
+    String FB,UID;
     ImageView iV;
     String PlaceName;
     FirebaseStorage storage;
     StorageReference storageReference;
     Uri filePath;
+    boolean bstorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,10 @@ public class FeedbackAct extends AppCompatActivity {
         ARRDP = new ArrayList<DishPrice>();
 
 
+
+
+        FirebaseUser firebaseUser = refAuth.getCurrentUser();
+        UID=firebaseUser.getUid();
 
 
         storage = FirebaseStorage.getInstance();
@@ -129,45 +135,49 @@ public class FeedbackAct extends AppCompatActivity {
 
         EVid = String.valueOf(EventID);
 
+        Query query = refEvnts
+                .orderByChild("id")
+                .equalTo(EventID);
+        query.addListenerForSingleValueEvent(vel);
 
 
-
-        ValueEventListener listener = new ValueEventListener()
-        {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-
-                for(DataSnapshot data : ds.getChildren()) {
-                    dataTMP1 = data.getValue(Evnts.class);
-                    Useruid = data.getValue(User.class);
-
-                    FirebaseUser user = refAuth.getCurrentUser();
-                    userUID = user.getUid();
-                    UO = dataTMP1.getArrUO();
-
-
-                    PlaceName = dataTMP1.getPlace();
-                    name = UO.get(pos).getName();                     //מושך את כל הנתונים שבUSERORDER של אותו סועד ספציפי כדי שאחר כך אאעדכן את הנתונים החדשים עם הנתונים הקודמים
-                    MoneyP = UO.get(pos).getMoneyPEID();
-                    change = UO.get(pos).getChange();
-                    sum = UO.get(pos).getTotalprice();
-                    ARRDP=UO.get(pos).getArrDP();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-        refEvnts.addValueEventListener(listener);
     }
 
+    com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot ds) {
+
+            for(DataSnapshot data : ds.getChildren()) {
+                dataTMP1 = data.getValue(Evnts.class);
+                Useruid = data.getValue(User.class);
+
+                FirebaseUser user = refAuth.getCurrentUser();
+                userUID = user.getUid();
+                UO = dataTMP1.getArrUO();
+
+                bstorage = UO.get(pos).isStorage();
+                PlaceName = dataTMP1.getPlace();
+                name = UO.get(pos).getName();                     //מושך את כל הנתונים שבUSERORDER של אותו סועד ספציפי כדי שאחר כך אאעדכן את הנתונים החדשים עם הנתונים הקודמים
+                MoneyP = UO.get(pos).getMoneyPEID();
+                change = UO.get(pos).getChange();
+                sum = UO.get(pos).getTotalprice();
+                ARRDP=UO.get(pos).getArrDP();
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    };
 
 
 
-    public void Send (View view) {
+
+
+
+
+        public void Send (View view) {
 
         melel = FBet.getText().toString();
 
@@ -181,9 +191,9 @@ public class FeedbackAct extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);       //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
 
-        //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
+
 
     }
 
@@ -214,12 +224,16 @@ public class FeedbackAct extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference reference =  storageReference.child(""+PlaceName+"/"+Useruid);
+            StorageReference reference =  storageReference.child(""+PlaceName+"/"+UID + ".jpg");
             reference.putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
-                    Toast.makeText(FeedbackAct.this, "Image Uploaded", Toast.LENGTH_LONG);
+                    bstorage = true;
+                    UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);
+
+                    refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
+                    Toast.makeText(FeedbackAct.this, "Image Uploaded", Toast.LENGTH_LONG).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -248,14 +262,15 @@ public class FeedbackAct extends AppCompatActivity {
 
             if (rate == 0) {
 
-                Toast.makeText(FeedbackAct.this, "Please rate the ", Toast.LENGTH_LONG);
+                Toast.makeText(FeedbackAct.this, "Please rate us ", Toast.LENGTH_LONG);
             }
             else {
 
                 FB = tv.getText().toString();
 
 
-                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate);
+
+                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);
 
                 refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
 

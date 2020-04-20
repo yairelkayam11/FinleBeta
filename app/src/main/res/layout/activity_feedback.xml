@@ -271,6 +271,8 @@
 
     </LinearLayout>
 
+
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="119dp"
@@ -279,7 +281,7 @@
         android:onClick="save"
         android:background="@drawable/button2_rouns"
         android:text="Save"
-        android:textColor="#ffff" />
+        android:textColor="#ffffff" />
 
 
 </LinearLayout>

@@ -165,6 +165,12 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
              startActivity(t);
          }
 
+         if (str.equals("Review and recommendaions")) {
+
+             Intent t = new Intent(this,ShowFeedback.class);
+             startActivity(t);
+         }
+
         return true;
      }
 

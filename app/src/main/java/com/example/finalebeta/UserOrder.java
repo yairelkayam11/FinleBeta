@@ -12,12 +12,13 @@ public class UserOrder {
     private String Useruid;
     private String Feedback;
     private int Rate;
+    boolean storage;
 
     public UserOrder(String name, DishPrice ArrDP){}
 
     public UserOrder(){}
 
-    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid,String Feedback,int Rate) {
+    public UserOrder(String name, ArrayList<DishPrice> ArrDP, Double Totalprice , Double Change,Double MoneyPEID,String Useruid,String Feedback,int Rate , boolean storage) {
 
         this.name = name;
         this.ArrDP = ArrDP;
@@ -27,6 +28,7 @@ public class UserOrder {
         this.Useruid = Useruid;
         this.Feedback = Feedback;
         this.Rate = Rate;
+        this.storage = storage;
 
     }
 
@@ -92,6 +94,14 @@ public class UserOrder {
 
     public void setRate(int rate) {
         Rate = rate;
+    }
+
+    public boolean isStorage() {
+        return storage;
+    }
+
+    public void setStorage(boolean storage) {
+        this.storage = storage;
     }
 }
 

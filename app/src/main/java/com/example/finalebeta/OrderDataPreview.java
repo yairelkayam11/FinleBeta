@@ -61,6 +61,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     User Useruid;
     String userUID;
     int pos;
+    boolean storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +143,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                         j=i;
                     }
                 }
+                storage = UO.get(j).isStorage();
                 name = UO.get(j).getName();             //משיכת כל הנתונים של הזמנה של סועד j
                  MoneyP = UO.get(j).getMoneyPEID();
                 change = UO.get(j).getChange();
@@ -323,7 +325,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void back (View view) {
 
-        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,0);
+        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,0,storage);
 
         refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);                           //שמירת השינויים ועידכונם בפיירבייס
 

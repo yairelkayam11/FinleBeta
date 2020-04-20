@@ -171,6 +171,12 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             startActivity(t);
         }
 
+        if (str.equals("Review and recommendaions")) {
+
+            Intent t = new Intent(this,ShowFeedback.class);
+            startActivity(t);
+        }
+
         return true;
     }
 

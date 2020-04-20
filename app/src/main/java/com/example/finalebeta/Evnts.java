@@ -17,7 +17,7 @@ public class Evnts {
 
 
 
-    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active ,  ArrayList<UserOrder> ArrUO ) {
+    public Evnts(Long ID, String place, String name , String date, String time, String Epass , boolean Active ,  ArrayList<UserOrder> ArrUO) {
         this.ID = ID;
         this.time = time;
         this.name = name;
@@ -26,6 +26,7 @@ public class Evnts {
         this.Active = Active;
         this.Epass = Epass;
         this.ArrUO = ArrUO;
+
 
 
     }
@@ -96,6 +97,8 @@ public class Evnts {
     public void setArrUO(ArrayList<UserOrder> arrUO) {
         ArrUO = arrUO;
     }
+
+
 
     public  void CopyEvnts(Evnts Evnts){
         this.ID = Evnts.getID();

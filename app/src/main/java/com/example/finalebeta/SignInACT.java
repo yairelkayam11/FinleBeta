@@ -151,7 +151,8 @@ public class SignInACT extends AppCompatActivity {
                 Toast.makeText(SignInACT.this, "You have to fill all the fields", Toast.LENGTH_LONG).show();
 
             }
-        } else {
+        }
+        else {
 
             if(!TextUtils.isEmpty(eTemail.getText().toString()) && !TextUtils.isEmpty(eTpass.getText().toString()) &&
                     !TextUtils.isEmpty(eTphone.getText().toString()) && !TextUtils.isEmpty(eTname.getText().toString())) {

@@ -30,6 +30,11 @@
         android:title="Feedback"
         android:orderInCategory="500"/>
 
+    <item
+        android:id="@+id/RaR"
+        android:title="Review and recommendaions"
+        android:orderInCategory="600"/>
+
 
 
 </menu>
