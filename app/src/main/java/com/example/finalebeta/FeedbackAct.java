@@ -252,7 +252,7 @@ public class FeedbackAct extends AppCompatActivity {
 
         }
 
-        public void save (View view) { //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
+        public void save (View view) {          //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
 
             if (rb1.isChecked()) rate = 1;
             if (rb2.isChecked()) rate = 2;
@@ -270,7 +270,7 @@ public class FeedbackAct extends AppCompatActivity {
 
 
 
-                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);
+                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);             //עדכון הערכים החדשים והוספתם לפיירבייס
 
                 refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
 

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +42,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     String name;
     double MoneyP,change,sum;
     AlertDialog.Builder adb;
-    int pos2;
+    int Rate;
     ArrayAdapter adp;
     ArrayList<DishPrice> ARRDP;
     ArrayList<String> Ast;
@@ -59,7 +60,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     String EVid;
     int flag = 1;
     User Useruid;
-    String userUID;
+    String userUID,fb;
     int pos;
     boolean storage;
 
@@ -148,7 +149,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
                  MoneyP = UO.get(j).getMoneyPEID();
                 change = UO.get(j).getChange();
                 sum = UO.get(j).getTotalprice();
-                ARRDP=UO.get(j).getArrDP();
+                ARRDP = UO.get(j).getArrDP();
+                Rate = UO.get(j).getRate();
+                fb = UO.get(j).getFeedback();
+
+
 
                 for(int i = 0; i<ARRDP.size(); i++){
                     Ast.add( ARRDP.get(i).getDish() + " - " + ARRDP.get(i).getPrice());
@@ -218,31 +223,47 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void add (View view) {
 
-        dish = ETdish.getText().toString();
-        price = Float.parseFloat(ETprice.getText().toString());
+        if (!TextUtils.isEmpty(ETdish.getText().toString())&&!TextUtils.isEmpty(ETprice.getText().toString())) {         //הוספת מנה לתוך רשימה מטיפוס dishprice
 
-        if (dish.isEmpty()||ETprice.getText().toString().isEmpty()) {         //הוספת מנה
+            dish = ETdish.getText().toString();
+            price = Float.parseFloat(ETprice.getText().toString());
 
-            Toast.makeText(OrderDataPreview.this, "you must enter price or dish name ", Toast.LENGTH_SHORT).show();
+            sum = sum + price;
 
 
+          if (sum<=MoneyP&&price<=MoneyP) {
+
+              Ssum = String.valueOf(sum);
+
+              dp = new DishPrice(dish, price);
+              ARRDP.add(dp);
+              ETdish.setVisibility(View.INVISIBLE);
+              ETprice.setVisibility(View.INVISIBLE);
+              btn3.setVisibility(View.INVISIBLE);
+              btncancelDish.setVisibility(View.INVISIBLE);
+              ETdish.setText("");
+              ETprice.setText("");
+              Ast.add(dish + " - " + price);  // עדכון המחיר לאחר הוספת מנה
+              adp.notifyDataSetChanged();
+
+              change = MoneyP - sum;
+
+              Tvtotalprice.setText("Total price :" + Ssum);
+              TVchange.setText("Change :" + (MoneyP - sum));
+          }
+          else {
+              Toast.makeText(OrderDataPreview.this, "You must update your money peid ", Toast.LENGTH_SHORT).show();
+              sum = sum - price;
+              ETdish.setText("");
+              ETprice.setText("");
+          }
         }
 
-             sum = sum + price;
-             Ssum = String.valueOf(sum);
+        else  {
 
-             dp = new DishPrice(dish, price);
-             ARRDP.add(dp);
-             ETdish.setVisibility(View.INVISIBLE);
-             ETprice.setVisibility(View.INVISIBLE);
-             btn3.setVisibility(View.INVISIBLE);
-             btncancelDish.setVisibility(View.INVISIBLE);
-             ETdish.setText("");
-             ETprice.setText("");
-             Ast.add(dish + " - " + price);  // עדכון המחיר לאחר הוספת מנה
-             adp.notifyDataSetChanged();
+            Toast.makeText(OrderDataPreview.this, "You must enter price or dish name ", Toast.LENGTH_SHORT).show();
 
-             Tvtotalprice.setText("Total price :" + Ssum);
+        }
 
 
     }
@@ -263,18 +284,23 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     }
     public void ApplyMoney (View view) {
 
-        MoneyP = Double.parseDouble(ETmoney.getText().toString());
-        k = ETmoney.getText().toString();
-        if (k.isEmpty()) Toast.makeText(OrderDataPreview.this, "You must enter money peid", Toast.LENGTH_SHORT).show();
-        Smp = String.valueOf(MoneyP);
-        TVmoneypeid.setText("Money peid :"+Smp);            //שינוי סכום לתשלום
-        ETmoney.setVisibility(View.INVISIBLE);
-        btn7.setVisibility(View.INVISIBLE);
-        btncancelMP.setVisibility(View.INVISIBLE);
+        if (!TextUtils.isEmpty(ETmoney.getText().toString())) {
 
-        change = MoneyP-sum;
-        Schange = String.valueOf(change);
-        TVchange.setText("Change :"+Schange);
+            MoneyP = Double.parseDouble(ETmoney.getText().toString());
+            Smp = String.valueOf(MoneyP);
+            TVmoneypeid.setText("Money peid :" + Smp);            //שינוי סכום לתשלום
+            ETmoney.setVisibility(View.INVISIBLE);
+            btn7.setVisibility(View.INVISIBLE);
+            btncancelMP.setVisibility(View.INVISIBLE);
+
+            change = MoneyP - sum;
+            Schange = String.valueOf(change);
+            TVchange.setText("Change :" + Schange);
+        }
+
+        else {
+            Toast.makeText(OrderDataPreview.this, "You must enter money peid", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -291,13 +317,14 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
         sum = sum - (dataTMP1.getArrUO().get(pos).getArrDP().get(position).getPrice());
 
-        Tvtotalprice.setText(""+sum);
-
         adb=new AlertDialog.Builder(this);
         adb.setMessage("Do you want to delete this dish?");
         adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {                //בלחיצה על איבר ברשימת המנות נפתחת אםשרות להסיר מנה ואחרי זה עדכון התשום
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Tvtotalprice.setText("Total price :"+sum);
+                TVchange.setText("Change :"+(MoneyP-sum));
 
 
                 ARRDP.remove(position);
@@ -325,7 +352,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void back (View view) {
 
-        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,null,0,storage);
+        UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,fb,Rate,storage);
 
         refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(uo);                           //שמירת השינויים ועידכונם בפיירבייס
 
@@ -337,10 +364,38 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     public void DeletOrder (View view) {
 
-        refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();                  //כפתור למחיקת הזמנה
 
-        Intent t = new Intent(this,OrderAct.class);
-        startActivity(t);
+
+        adb=new AlertDialog.Builder(this);
+        adb.setMessage("Do you want to delete this order?");
+        adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {                //בלחיצה על איבר ברשימת המנות נפתחת אםשרות להסיר מנה ואחרי זה עדכון התשום
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();                  //כפתור למחיקת הזמנה
+
+                Intent t = new Intent(OrderDataPreview.this,OrderAct.class);
+                startActivity(t);
+
+
+            }
+        });
+
+        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+            }
+        });
+
+
+        AlertDialog ad = adb.create();
+        ad.show();
+
+
+
+
 
     }
 

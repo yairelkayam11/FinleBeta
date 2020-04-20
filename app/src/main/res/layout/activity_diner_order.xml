@@ -26,7 +26,7 @@
         android:hint="Diner name :"
         android:paddingLeft="15dp"
         android:inputType="textPersonName"
-        android:textColorHint="#000000" />
+        android:textColorHint="#635E5E" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,7 +125,7 @@
             android:background="@drawable/edittext_rouns"
             android:ems="10"
             android:gravity="center"
-            android:inputType="phone" />
+            android:inputType="number" />
 
         <TextView
             android:id="@+id/tv6"
@@ -216,6 +216,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
         android:orientation="horizontal">
 
         <TextView
@@ -250,6 +251,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layoutDirection="ltr"
         android:orientation="horizontal">
 
         <TextView

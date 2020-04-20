@@ -72,7 +72,7 @@ public class ShowFeedback extends AppCompatActivity {
         plus = findViewById(R.id.plus);
         minus = findViewById(R.id.minus);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();  // משתנה שמכיל את כל ההרשאות דל סטורג
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,7 @@ public class ShowFeedback extends AppCompatActivity {
     public void Search (View view) {
 
         place = editText.getText().toString();
-
+                                                        //כאשר לוחצים על כפתור "SEARCH" מתבצע תהליך סינון לפי מקום ת זאת אומרת רק האירועים שהם בעליי אותו place שהזנתי יקראו מהפיירבייס
         Query query = refEvnts
                 .orderByChild("place")
                 .equalTo(place);
@@ -118,7 +118,6 @@ public class ShowFeedback extends AppCompatActivity {
         editText.setText("");
         TV.setHint(""+place);
         TV.setText("");
-
 
     }
 
@@ -140,16 +139,16 @@ public class ShowFeedback extends AppCompatActivity {
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
                         if(dataTMP.getArrUO().get(j).getRate() != 0) {
 
-                            Rate = Rate + (dataTMP.getArrUO().get(j).getRate());
+                            Rate = Rate + (dataTMP.getArrUO().get(j).getRate());                    //פעולה שסוכמת את כל ציוני הדירוג שנתנו המבקרים וסוכמת גם את מספר המדרגים לצורך של חישוב ממוצע
 
                             Sumofrate++;
                         }
                         if (!TextUtils.isEmpty(dataTMP.getArrUO().get(j).getFeedback())){
-                            ars.add(dataTMP.getArrUO().get(j).getFeedback());
+                            ars.add(dataTMP.getArrUO().get(j).getFeedback());                                    //פעולה שדוחפת לתוך רשימה מטיפוס string את כל הביקורות שכתבו הסועדים ומציגה אותם אחר כך בליסטוויו
 
                         }
                         if(dataTMP.getArrUO().get(j).isStorage()){
-                            count++;
+                            count++;                                               //סכימה של כמות התמונות מstorage והוספתן לרשימת סטרינגים שבה יש את uid של מעלה התמונה
                             arruid.add(dataTMP.getArrUO().get(j).getUseruid());
                         }
 
@@ -158,7 +157,7 @@ public class ShowFeedback extends AppCompatActivity {
                 }
                 AvgMark = Rate/Sumofrate;
 
-                TV.setText("               " + place + " :" + "        "+ "Avrage Mark is :" + AvgMark + "     ");
+                TV.setText("               " + place + " :" + "        "+ "Avrage Mark is :" + AvgMark + "     ");             //חישוב הציון הממוצע
 
                 adp = new ArrayAdapter<>(ShowFeedback.this,R.layout.support_simple_spinner_dropdown_item, ars);
                 LV.setAdapter(adp);
@@ -179,11 +178,13 @@ public class ShowFeedback extends AppCompatActivity {
     };
 
     private void downloadimg() {
-        Ref = mStorageRef.child(""+place+"/").child("" + arruid.get(k) + ".jpg");
+        plus.setVisibility(View.VISIBLE);
+        minus.setVisibility(View.VISIBLE);
+        Ref = mStorageRef.child(""+place+"/").child("" + arruid.get(k) + ".jpg");                             //פעולה ששולפת מהפיירבייס סטורג את התמונה האחרונה התקייה של אותו מקום אירוע ומציגה אותה בimage view
         Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(ShowFeedback.this).load(uri).fit().centerCrop().into(imageView2);
+                Picasso.with(ShowFeedback.this).load(uri).fit().centerCrop().into(imageView2);  //הצגת התמונה
             }
 
 

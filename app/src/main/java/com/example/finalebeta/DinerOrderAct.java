@@ -146,7 +146,10 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
         namee = ETname.getText().toString();
 
+        ETname.setHint(""+namee);
         ETname.setText("");
+
+
 
         if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();  //הזנת שם סועד
 
@@ -157,15 +160,18 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             public void AddDishPrice(View v) {
 
 
-                         //הוספת מנות
-
-                if (!TextUtils.isEmpty(et2.getText().toString())&&!TextUtils.isEmpty(et3.getText().toString()))
+                if (!TextUtils.isEmpty(et2.getText().toString())&&!TextUtils.isEmpty(et3.getText().toString()))       //הוספת מנות
                 {
 
                     dish = et2.getText().toString();
                     price = Float.parseFloat(et3.getText().toString());
 
+
+
+
                     sum = sum + price;
+
+
 
                     Ssum = String.valueOf(sum);
 
@@ -186,8 +192,9 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
                 }
 
 
-                  if (TextUtils.isEmpty(et2.getText().toString())) Toast.makeText(DinerOrderAct.this, "you must enter dish name ", Toast.LENGTH_SHORT).show();
-                  if (TextUtils.isEmpty(et3.getText().toString())) Toast.makeText(DinerOrderAct.this, "you must enter price  ", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(DinerOrderAct.this, "You must enter dish name or price", Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -195,42 +202,41 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
     public void finish (View view) {
 
 
-     /*   STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
+        if (ArrDP.size()!=0&&!TextUtils.isEmpty(et14.getText().toString())&&!TextUtils.isEmpty(namee)) {
 
-        MoneyP = Double.valueOf((STRMoneyP));
-
-
-        change = MoneyP-sum;
-
-        Schange = String.valueOf(change);
-        tv17.setText(Schange);*/
-
-        if (ArrDP.size()!=0&&!TextUtils.isEmpty(et14.getText().toString())&&!TextUtils.isEmpty(namee))
-        {
             STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
 
             MoneyP = Double.valueOf((STRMoneyP));
 
 
-            change = MoneyP-sum;
 
-            Schange = String.valueOf(change);
-            tv17.setText(Schange);
 
-            ArrUO = dataTMP.getArrUO();
-            UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP,Useruid,null,0,false);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
 
-            ArrUO.add(uo);
+            if (sum <= MoneyP) {
+                change = MoneyP - sum;
 
-            dataTMP.setArrUO(ArrUO);
-            refEvnts.child("" + t).setValue(dataTMP);
+                Schange = String.valueOf(change);
+                tv17.setText(Schange);
 
-            Toast.makeText(DinerOrderAct.this, "Your order has been received", Toast.LENGTH_SHORT).show();
+                ArrUO = dataTMP.getArrUO();
+                UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP, Useruid, null, 0, false);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
 
-            FriendsSum++;
+                ArrUO.add(uo);
 
-            Intent h = new Intent(this,OrderAct.class);
-            startActivity(h);
+                dataTMP.setArrUO(ArrUO);
+                refEvnts.child("" + t).setValue(dataTMP);
+
+                Toast.makeText(DinerOrderAct.this, "Your order has been received", Toast.LENGTH_SHORT).show();
+
+                FriendsSum++;
+
+                Intent h = new Intent(this, OrderAct.class);
+                startActivity(h);
+
+            }
+            else {
+                Toast.makeText(DinerOrderAct.this, "You must update your money peid ", Toast.LENGTH_SHORT).show();
+            }
 
         }
         else {
