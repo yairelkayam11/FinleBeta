@@ -25,13 +25,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+/**
+ *
+ * when the pb finish after 3 seconds there is pass to login sign
+ */
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                Intent t = new Intent(MainActivity.this,SignInACT.class);        // מסך ראשוני שמטרתו לעשות מעבר של מסך בפתיחת האפליקציה
+                Intent t = new Intent(MainActivity.this,SignInACT.class);
                 startActivity(t);
                 finish();
             }
@@ -41,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         prog();
 
     }
+
+    /**
+     *
+     * this progressbar method, the bar charged from 0-100 for 3 seconds
+     */
 
     public void prog() {
 

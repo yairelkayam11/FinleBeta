@@ -1,5 +1,11 @@
 package com.example.finalebeta;
 
+
+
+/**
+ * this class is for dish list this variables write to database under Evnts - arrUO -arrDP
+ *
+ */
 public class DishPrice {
 
     private String dish;

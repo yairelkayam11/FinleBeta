@@ -1,6 +1,11 @@
 package com.example.finalebeta;
 
 import java.util.ArrayList;
+/**
+ * this class is for new Event, this variables write to database under Evnts.
+ *
+ */
+
 
 public class Evnts {
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
 
 public class AddEventACT extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -56,18 +58,19 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         /**
 
          * Method give today date
-         *
+         *<p>
          */
 
         Calendar calendar = Calendar.getInstance();
-        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()); //פעוולה שמביאה את התאריך של היום
+        String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime());
         currentDate = currentDate.replace('.','/');
 
         /**
          * Method filter out only the event with today date
+         * <p>
          */
 
-        Query query =  refEvnts.orderByChild("date").equalTo(currentDate);      // סינון אירועים שמופיעים לפי התאריך של אותו יום
+        Query query =  refEvnts.orderByChild("date").equalTo(currentDate);
         query.addListenerForSingleValueEvent(listener);
 
     }
@@ -82,7 +85,7 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             IDlist.clear();
             Values.clear();
 
-            for(DataSnapshot data : ds.getChildren()) {              //פעולה שקוראת מהפיירבייס את האירועים ודוחפת את הנתונים שלהם לתוך רשימה מטיפוס אירוע ומציגה את שם האירוע על ליסטויו
+            for(DataSnapshot data : ds.getChildren()) {
 
                 Evnts dataTMP1 = data.getValue(Evnts.class);
                 Values.add(dataTMP1);
@@ -124,10 +127,11 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
      * @param view
      * @param position
      * @param id
+     * <p>
      */
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {  //פעולה שכאשר לוחצים על איבר/אירוע ברשימה נפתח אלרטדיאלוג שדורש להזין סיסמה יחודית לאותו אירוע
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
         dataa = Values.get(position);
         EventID  = dataa.getID();
@@ -170,7 +174,9 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Review and recommendations");
+        menu.add("Credits");
+        menu.add("Logout");
 
         return true;
 
@@ -187,8 +193,19 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
             Intent t = new Intent(this,Creditim.class);
             startActivity(t);
         }
+        if (str.equals("Logout")) {
 
-        if (str.equals("Review and recommendaions")) {
+
+            refAuth.signOut();
+            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("stayConnect",false);
+            editor.commit();
+            Intent t = new Intent(this, SignInACT.class);
+            startActivity(t);
+
+        }
+        if (str.equals("Review and recommendations")) {
 
             Intent t = new Intent(this,ShowFeedback.class);
             startActivity(t);

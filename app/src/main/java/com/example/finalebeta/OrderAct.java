@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,6 +74,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 /**
  *
  * this method filter out only the event with the same ID of the event that chose
+ * <p>
  */
 
 
@@ -80,7 +82,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         Query query = refEvnts
                 .orderByChild("id")
                 .equalTo(EventID);
-        query.addListenerForSingleValueEvent(vel);   //פעולה שמסננת וציגה רק את ההזמנות של אותו אירוע שנכנסו אליו ושID שלו הוא אותו ID שח האירוע שבחרו
+        query.addListenerForSingleValueEvent(vel);
 
 
     }
@@ -96,21 +98,23 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
                     /**
                      * the method read from database the UID of the current user
+                     * <p>
                      */
 
 
-                    FirebaseUser user = refAuth.getCurrentUser();  //קיראה מהדאטאבייס ומכניסה למשתמש את הUID של המשתמש שיצר הזמנה
+                    FirebaseUser user = refAuth.getCurrentUser();
                     userUID = user.getUid();
 
 
                     if (dataTMP.getArrUO().isEmpty()) {
 
-                        Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();//אם עדיין לאנפצחו הזמנות באותו אירוע זה כותה שאין הזמנות עדיין
+                        Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();
                     }
 
                     /**
                      *
                      * this method sum the whole price of all the diners and make tip
+                     * <p>
                      */
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
 
@@ -146,10 +150,11 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         /**
          *
          * Method to pass between activities
+         * <p>
          */
 
 
-        Intent t = new Intent(this,DinerOrderAct.class);  //פעולת כפתור שמעבירה למסך שבו יוצרים הזמנה
+        Intent t = new Intent(this,DinerOrderAct.class);
         t.putExtra("key",pos);
         startActivity(t);
 
@@ -158,7 +163,10 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Open Events");
+        menu.add("Credits");
+        menu.add("Review and recommendations");
+        menu.add("Logout");
 
         return true;
 
@@ -181,10 +189,22 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
              startActivity(t);
          }
 
-         if (str.equals("Review and recommendaions")) {
+         if (str.equals("Review and recommendations")) {
 
              Intent t = new Intent(this,ShowFeedback.class);
              startActivity(t);
+         }
+         if (str.equals("Logout")) {
+
+
+             refAuth.signOut();
+             SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+             SharedPreferences.Editor editor=settings.edit();
+             editor.putBoolean("stayConnect",false);
+             editor.commit();
+             Intent t = new Intent(this, SignInACT.class);
+             startActivity(t);
+
          }
 
         return true;
@@ -197,6 +217,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
          *
          * when click on order in the listview you pass to editorder activity but this option its only for the user that opened this order
          * by compareing the current uid to the uid of the user that opened
+         * <p>
          */
 
 
@@ -205,16 +226,17 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
             if (SavedUID.equals(userUID)) {
 
-                dataa = UO.get(position);                                          // כאשר לוחצים על הזמנה שנפתחה יש אפשרות רק לאותו user שפתח אותה לעבור למסך עריכת הזמנה
+                dataa = UO.get(position);
                 dataaName = dataa.getName();
 
                 /**
                  *
                  * passing data , pass the name of the diner and the position of the order to read the order details of this position
+                 * <p>
                  */
 
 
-                Intent t = new Intent(this,OrderDataPreview.class);  // שלחית נתונים של שם סועד ומיקומו ברשימה
+                Intent t = new Intent(this,OrderDataPreview.class);
                 t.putExtra("key",dataaName);
                 t.putExtra("key2",position);
                 startActivity(t);
@@ -222,7 +244,7 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
             }
             else {
 
-                Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show(); // כאשר אדם מנשה להגיע למסך עריכה של הזמנה שלא הקים יקבל הודעה זו
+                Toast.makeText(OrderAct.this, "This user cannot access the edit window of this order", Toast.LENGTH_LONG).show();
 
             }
 

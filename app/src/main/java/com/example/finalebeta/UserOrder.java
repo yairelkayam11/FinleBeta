@@ -2,6 +2,11 @@ package com.example.finalebeta;
 
 import java.util.ArrayList;
 
+/**
+ * this class is for the orders of the diner ,this is var of Evnts this variables write to database under Evnts
+ *
+ */
+
 public class UserOrder {
 
     ArrayList<DishPrice> ArrDP = new ArrayList<DishPrice>();

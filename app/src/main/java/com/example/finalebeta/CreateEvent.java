@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
 
 public class CreateEvent extends AppCompatActivity {
@@ -64,6 +66,7 @@ public class CreateEvent extends AppCompatActivity {
         /**
          *
          *  Method for DatePicker that open Calendar
+         *  <p>
          */
 
 
@@ -71,7 +74,7 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                c = Calendar.getInstance();           // דייטפיקר יוצרת לוח שנה שבו בוחרים תאריך
+                c = Calendar.getInstance();
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 int month = c.get(Calendar.MONTH);
                 int year = c.get(Calendar.YEAR);
@@ -93,9 +96,10 @@ public class CreateEvent extends AppCompatActivity {
         /**
          *
          *  Method for TimePicker that open Clock
+         *  <p>
          */
 
-        TimeBtn.setOnClickListener(new View.OnClickListener() {  //טייםפיקר יוצרת שעון שבו בוחרים שעה
+        TimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -119,9 +123,10 @@ public class CreateEvent extends AppCompatActivity {
         /**
          *
          * this method read data from firebase and count the amount of childrens for make ID
+         * <p>
          */
 
-        ValueEventListener listener = new ValueEventListener() // פעולה שקוראת מידע מהפיירבייס וסוכמת את מספר הילדים לשימוש של יצירת ID לכל אירוע
+        ValueEventListener listener = new ValueEventListener()
         {
 
             @Override
@@ -144,6 +149,7 @@ public class CreateEvent extends AppCompatActivity {
      *
      * saveing the event details
      * @param view
+     * <p>
      */
 
 
@@ -164,10 +170,11 @@ public class CreateEvent extends AppCompatActivity {
 
         /**
          * pushing event data to firebase
+         * <p>
          */
 
 
-        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {    //דיחפת כל הנתונים שהזינו בשדות יצרית עצם בדאטאבייס
+        if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {
 
             evnt = new Evnts(IDD, place, name, date, time, Epass, Active,null);
             refEvnts.child(""+t).setValue(evnt);
@@ -181,7 +188,9 @@ public class CreateEvent extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Open Events");
+        menu.add("Credits");
+        menu.add("Logout");
 
         return true;
 
@@ -197,6 +206,18 @@ public class CreateEvent extends AppCompatActivity {
 
             Intent t = new Intent(this,AddEventACT.class);
             startActivity(t);
+        }
+        if (str.equals("Logout")) {
+
+
+            refAuth.signOut();
+            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("stayConnect",false);
+            editor.commit();
+            Intent t = new Intent(this, SignInACT.class);
+            startActivity(t);
+
         }
         if (str.equals("Credits")) {
 

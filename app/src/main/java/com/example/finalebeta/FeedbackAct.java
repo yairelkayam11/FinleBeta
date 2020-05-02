@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -59,7 +60,6 @@ public class FeedbackAct extends AppCompatActivity {
     String melel;
     int rate;
     TextView tv;
-    int Gallery=1;
     ArrayList<DishPrice> ARRDP;
     Evnts dataTMP1;
     String userUID;
@@ -143,7 +143,7 @@ public class FeedbackAct extends AppCompatActivity {
 
     /**
      * read all the order details for update the new details later
-     *
+     *<p>
      */
 
     com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
@@ -160,7 +160,7 @@ public class FeedbackAct extends AppCompatActivity {
 
                 bstorage = UO.get(pos).isStorage();
                 PlaceName = dataTMP1.getPlace();
-                name = UO.get(pos).getName();                     //מושך את כל הנתונים שבUSERORDER של אותו סועד ספציפי כדי שאחר כך אאעדכן את הנתונים החדשים עם הנתונים הקודמים
+                name = UO.get(pos).getName();
                 MoneyP = UO.get(pos).getMoneyPEID();
                 change = UO.get(pos).getChange();
                 sum = UO.get(pos).getTotalprice();
@@ -179,6 +179,7 @@ public class FeedbackAct extends AppCompatActivity {
      *
      * the method set the review that write in the edittext in the textview
      * @param view
+     * <p>
      */
 
 
@@ -186,13 +187,14 @@ public class FeedbackAct extends AppCompatActivity {
 
         melel = FBet.getText().toString();
 
-        tv.setText(melel);                                         //שם במשתנה סטרינג את על מלל המשוב שנתן סועד
+        tv.setText(melel);
 
         FBet.setText("");
     }
 
     /**
      * this button open the gallery for choosing photo
+     * <p>
      */
 
     private void choosepic () {
@@ -200,7 +202,7 @@ public class FeedbackAct extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);       //לחיצה על כפתור זה מכניסה את המשתמש לגלרייה לבחירת תמונה להעלאה
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), 1);
 
 
 
@@ -228,6 +230,7 @@ public class FeedbackAct extends AppCompatActivity {
      *
      * this method uploading the photos that chose to firebase storage in folder of the event place name
      * @throws IOException
+     * <p>
      */
 
 
@@ -272,9 +275,10 @@ public class FeedbackAct extends AppCompatActivity {
      *
      * this method write and update firebase with the new varibale , rate and review
      * @param view
+     * <p>
      */
 
-    public void save (View view) {          //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
+    public void save (View view) {
 
             if (rb1.isChecked()) rate = 1;
             if (rb2.isChecked()) rate = 2;
@@ -292,7 +296,7 @@ public class FeedbackAct extends AppCompatActivity {
 
 
 
-                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);             //עדכון הערכים החדשים והוספתם לפיירבייס
+                UserOrder uo = new UserOrder(name, ARRDP, sum, change, MoneyP, userUID, FB, rate,bstorage);
 
                 refEvnts.child(EVid).child("arrUO").child(String.valueOf(pos)).setValue(uo);
 
@@ -304,7 +308,9 @@ public class FeedbackAct extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Open Events");
+        menu.add("Credits");
+        menu.add("Logout");
 
         return true;
 
@@ -318,6 +324,18 @@ public class FeedbackAct extends AppCompatActivity {
 
             Intent t = new Intent(this,AddEventACT.class);
             startActivity(t);
+        }
+        if (str.equals("Logout")) {
+
+
+            refAuth.signOut();
+            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("stayConnect",false);
+            editor.commit();
+            Intent t = new Intent(this, SignInACT.class);
+            startActivity(t);
+
         }
 
         if (str.equals("Credits")) {

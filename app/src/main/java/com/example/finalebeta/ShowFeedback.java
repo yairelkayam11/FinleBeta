@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import static com.example.finalebeta.AddEventACT.EventID;
+import static com.example.finalebeta.FBref.refAuth;
 import static com.example.finalebeta.FBref.refEvnts;
 
 public class ShowFeedback extends AppCompatActivity {
@@ -71,10 +73,11 @@ public class ShowFeedback extends AppCompatActivity {
         plus = findViewById(R.id.plus);
         minus = findViewById(R.id.minus);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();  // משתנה שמכיל את כל ההרשאות דל סטורג
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         /**
          * this is liseners for the button that can pass between the photos
+         * <p>
          */
 
         plus.setOnClickListener(new View.OnClickListener() {
@@ -111,12 +114,13 @@ public class ShowFeedback extends AppCompatActivity {
     /**
      * when you write the name of the place to check the review about him the method filter out the rate and the review only of the event that his place is the same
      * @param view
+     * <p>
      */
 
     public void Search (View view) {
 
         place = editText.getText().toString();
-                                                        //כאשר לוחצים על כפתור "SEARCH" מתבצע תהליך סינון לפי מקום ת זאת אומרת רק האירועים שהם בעליי אותו place שהזנתי יקראו מהפיירבייס
+
         Query query = refEvnts
                 .orderByChild("place")
                 .equalTo(place);
@@ -135,6 +139,7 @@ public class ShowFeedback extends AppCompatActivity {
      * this method counter the raters and the total rate about this place
      * add to array list all the review about this place
      * calculate the average rate
+     * <p>
      */
 
     com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
@@ -155,16 +160,16 @@ public class ShowFeedback extends AppCompatActivity {
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
                         if(dataTMP.getArrUO().get(j).getRate() != 0) {
 
-                            Rate = Rate + (dataTMP.getArrUO().get(j).getRate());                    //פעולה שסוכמת את כל ציוני הדירוג שנתנו המבקרים וסוכמת גם את מספר המדרגים לצורך של חישוב ממוצע
+                            Rate = Rate + (dataTMP.getArrUO().get(j).getRate());
 
                             Sumofrate++;
                         }
                         if (!TextUtils.isEmpty(dataTMP.getArrUO().get(j).getFeedback())){
-                            ars.add(dataTMP.getArrUO().get(j).getFeedback());                                    //פעולה שדוחפת לתוך רשימה מטיפוס string את כל הביקורות שכתבו הסועדים ומציגה אותם אחר כך בליסטוויו
+                            ars.add(dataTMP.getArrUO().get(j).getFeedback());
 
                         }
                         if(dataTMP.getArrUO().get(j).isStorage()){
-                            count++;                                               //סכימה של כמות התמונות מstorage והוספתן לרשימת סטרינגים שבה יש את uid של מעלה התמונה
+                            count++;
                             arruid.add(dataTMP.getArrUO().get(j).getUseruid());
                         }
 
@@ -173,8 +178,7 @@ public class ShowFeedback extends AppCompatActivity {
                 }
                 AvgMark = Rate/Sumofrate;
 
-                TV.setText("               " + place + " :" + "        "+ "Avrage Mark is :" + AvgMark + "     ");             //חישוב הציון הממוצע
-
+                TV.setText("               " + place + " :" + "        "+ "Avrage Mark is :" + AvgMark + "     ");
                 adp = new ArrayAdapter<>(ShowFeedback.this,R.layout.support_simple_spinner_dropdown_item, ars);
                 LV.setAdapter(adp);
                 downloadimg();
@@ -195,16 +199,17 @@ public class ShowFeedback extends AppCompatActivity {
 
     /**
      * this method read from firebase storage from the folder of the place the photos and show them in imageview
+     * <p>
      */
 
     private void downloadimg() {
         plus.setVisibility(View.VISIBLE);
         minus.setVisibility(View.VISIBLE);
-        Ref = mStorageRef.child(""+place+"/").child("" + arruid.get(k) + ".jpg");                             //פעולה ששולפת מהפיירבייס סטורג את התמונה האחרונה התקייה של אותו מקום אירוע ומציגה אותה בimage view
+        Ref = mStorageRef.child(""+place+"/").child("" + arruid.get(k) + ".jpg");
         Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.with(ShowFeedback.this).load(uri).fit().centerCrop().into(imageView2);  //הצגת התמונה
+                Picasso.with(ShowFeedback.this).load(uri).fit().centerCrop().into(imageView2);
             }
 
 
@@ -224,7 +229,9 @@ public class ShowFeedback extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Open Events");
+        menu.add("Credits");
+        menu.add("Logout");
 
         return true;
 
@@ -246,6 +253,18 @@ public class ShowFeedback extends AppCompatActivity {
 
             Intent t = new Intent(this,AddEventACT.class);
             startActivity(t);
+        }
+        if (str.equals("Logout")) {
+
+
+            refAuth.signOut();
+            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("stayConnect",false);
+            editor.commit();
+            Intent t = new Intent(this, SignInACT.class);
+            startActivity(t);
+
         }
 
         return true;

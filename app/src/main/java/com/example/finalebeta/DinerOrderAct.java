@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -101,7 +102,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         Query query = refEvnts
                 .orderByChild("id")
                 .equalTo(t);
-        query.addListenerForSingleValueEvent(vel);     //סינון האירועים לפי הID של אותו אירוע כדי שנוכל לשמור את הuid של האדם שפתח את ההזמנה
+        query.addListenerForSingleValueEvent(vel);
 
 
 
@@ -119,9 +120,10 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
                     /**
                      * read from database the UID of th euser that open this order
+                     * <p>
                      */
 
-                    FirebaseUser user = refAuth.getCurrentUser();  //שמירת הUID של הuser הנוכחי
+                    FirebaseUser user = refAuth.getCurrentUser();
                     Useruid = user.getUid();
 
                 }
@@ -140,6 +142,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
      *
      * this button save the name of the diner in variable
      * @param view
+     * <p>
      */
 
 
@@ -152,7 +155,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
 
 
-        if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();  //הזנת שם סועד
+        if (namee.isEmpty()) Toast.makeText(DinerOrderAct.this, "You must enter diner name", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -161,12 +164,13 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
      * save the price and dish name in varibales and pushing to arraylist and sum the total price
      * presrnt the dish in listview
      * @param v
+     * <p>
      */
 
             public void AddDishPrice(View v) {
 
 
-                if (!TextUtils.isEmpty(et2.getText().toString())&&!TextUtils.isEmpty(et3.getText().toString()))       //הוספת מנות
+                if (!TextUtils.isEmpty(et2.getText().toString())&&!TextUtils.isEmpty(et3.getText().toString()))
                 {
 
                     dish = et2.getText().toString();
@@ -208,6 +212,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
      *
      * calculate the change and the total price and write to database the order details
      * @param view
+     * <p>
      */
 
 
@@ -216,7 +221,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
         if (ArrDP.size()!=0&&!TextUtils.isEmpty(et14.getText().toString())&&!TextUtils.isEmpty(namee)) {
 
-            STRMoneyP = et14.getText().toString();  //הזנת מחיר שהלקוח משלם איתו
+            STRMoneyP = et14.getText().toString();
 
             MoneyP = Double.valueOf((STRMoneyP));
 
@@ -231,7 +236,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
                 tv17.setText(Schange);
 
                 ArrUO = dataTMP.getArrUO();
-                UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP, Useruid, null, 0, false);          //דחיפת כל הנתונים לרשימה מסוג UserOrder ודחיפת הרשימה לפיירבייס דאטאבייס ויצירת הזמנה באירוע הנתון
+                UserOrder uo = new UserOrder(namee, ArrDP, sum, change, MoneyP, Useruid, null, 0, false);
 
                 ArrUO.add(uo);
 
@@ -273,6 +278,7 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
      * @param view
      * @param position
      * @param id
+     * <p>
      */
 
     @Override
@@ -280,14 +286,14 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         AlertDialog.Builder adb = new AlertDialog.Builder(DinerOrderAct.this);
         adb.setCancelable(false);
         adb.setMessage("Do you want to delete this dish?");
-        adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {               //לחיצה על איבר/ מנה שהרשימה של המנות שנוספו פותחת אפשרות להסיר אותה ובכך יתעדכן המחיר של הזמנה של סועד יחיד
+        adb.setNegativeButton("yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
 
                 sum = sum - (ArrDP.get(position).getPrice()) ;
 
-                ArrDP.remove(position);                                //מחיקת המנה מרשימת מסוג דיש פרייס , מחיקת כל רשימת השמות של המנות שמופיעה בליסטוויו ויצירת רישמה זו מחדש ללא המנה שהסרנו
+                ArrDP.remove(position);
                 tv18.setText(""+sum);
 
                 arrST.clear();
@@ -317,7 +323,9 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
     public boolean onCreateOptionsMenu (Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main,menu);
+        menu.add("Open Events");
+        menu.add("Credits");
+        menu.add("Logout");
 
         return true;
 
@@ -332,6 +340,18 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
             Intent t = new Intent(this,AddEventACT.class);
             startActivity(t);
+        }
+        if (str.equals("Logout")) {
+
+
+            refAuth.signOut();
+            SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
+            SharedPreferences.Editor editor=settings.edit();
+            editor.putBoolean("stayConnect",false);
+            editor.commit();
+            Intent t = new Intent(this, SignInACT.class);
+            startActivity(t);
+
         }
         if (str.equals("Credits")) {
 

@@ -62,17 +62,29 @@ public class SignInACT extends AppCompatActivity {
         regoption();
     }
 
+    /**
+     * On activity start - Checking if user already logged in.
+     * If logged in & asked to be remembered - pass on.
+     * <p>
+     */
+
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);    //   פעולה של stayconnected שלאחר סימון "זכור אותי"
+        SharedPreferences settings=getSharedPreferences("PREFS_NAME",MODE_PRIVATE);
         Boolean isChecked=settings.getBoolean("stayConnect",false);
         Intent si = new Intent(SignInACT.this,AddEventACT.class);
         if (refAuth.getCurrentUser()!=null && isChecked) {
             stayConnect=true;
-           // startActivity(si);
+            startActivity(si);
         }
     }
+
+
+    /**
+     * On activity pause - If logged in & asked to be remembered - kill activity.
+     * <p>
+     */
 
 
 
@@ -83,7 +95,7 @@ public class SignInACT extends AppCompatActivity {
     }
 
     private void regoption() {
-        SpannableString ss = new SpannableString("Don't have an account?  Register here!");      //פעולה שנמצאת במסך ההתחברות שכאשר לוחצים על register here היא חושפת מסך הרשמה
+        SpannableString ss = new SpannableString("Don't have an account?  Register here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -101,7 +113,7 @@ public class SignInACT extends AppCompatActivity {
     }
 
     private void logoption() {
-        SpannableString ss = new SpannableString("Already have an account?  Login here!");     //פעולה שנמצאת במסך ההרשמה שכאשר לוחצים עליה היא מחזירה למסך התחברות
+        SpannableString ss = new SpannableString("Already have an account?  Login here!");
         ClickableSpan span = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
@@ -119,12 +131,20 @@ public class SignInACT extends AppCompatActivity {
     }
 
 
+    /**
+     * Logging in or Registering to the application
+     * Using:   Firebase Auth with email & password
+     *          Firebase Realtime database with the object User to the branch Users
+     * If login or register process is Ok saving stay connect status & pass to next activity
+     * <p>
+     */
+
     public void logorreg(View view) {
         if (registered) {
             if(!TextUtils.isEmpty(eTemail.getText().toString()) && !TextUtils.isEmpty(eTpass.getText().toString())) {
                 email = eTemail.getText().toString();
             password = eTpass.getText().toString();
-            final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);        //לאחר לחציה על login יש טעינה ושלוח לAuth שהתחבר משתמש
+            final ProgressDialog pd = ProgressDialog.show(this, "Login", "Connecting...", true);
             refAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -161,7 +181,7 @@ public class SignInACT extends AppCompatActivity {
                 email = eTemail.getText().toString();
                 password = eTpass.getText().toString();
 
-                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);           //טעינה של הרשמה
+                final ProgressDialog pd = ProgressDialog.show(this, "Register", "Registering...", true);
                 refAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override

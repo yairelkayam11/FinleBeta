@@ -1,5 +1,10 @@
 package com.example.finalebeta;
 
+/**
+ * this class is for signup this variables write to database under Users
+ *
+ */
+
 public class User {
 
     private String name, email, phone, uid;

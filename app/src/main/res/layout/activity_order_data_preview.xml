@@ -16,11 +16,12 @@
     <TextView
         android:id="@+id/tv2"
         android:layout_width="match_parent"
-        android:textSize="25dp"
-        android:textStyle="italic"
-        android:gravity="center"
         android:layout_height="43dp"
-        android:text="" />
+        android:gravity="center"
+        android:textColor="#ffff"
+        android:text=""
+        android:textSize="30dp"
+        android:textStyle="italic" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,6 +78,7 @@
         <EditText
             android:id="@+id/EditName"
             android:layout_width="wrap_content"
+            android:padding="10dp"
             android:layout_height="56dp"
             android:layout_weight="1"
             android:background="@drawable/edittext_rouns"
@@ -116,6 +118,8 @@
             android:id="@+id/btncancelDish"
             android:layout_width="58dp"
             android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:background="@drawable/button2_rouns"
             android:layout_weight="1"
             android:onClick="cancelDish"
             android:visibility="invisible"
@@ -125,6 +129,8 @@
             android:id="@+id/btn3"
             android:layout_width="51dp"
             android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:background="@drawable/button2_rouns"
             android:layout_weight="1"
             android:onClick="add"
             android:visibility="invisible"
@@ -135,6 +141,7 @@
             android:layout_width="83dp"
             android:layout_height="37dp"
             android:layout_weight="1"
+            android:padding="10dp"
             android:background="@drawable/edittext_rouns"
             android:ems="10"
             android:inputType="number"
@@ -148,6 +155,7 @@
             android:background="@drawable/edittext_rouns"
             android:ems="10"
             android:inputType="textPersonName"
+            android:padding="10dp"
             android:visibility="invisible" />
     </LinearLayout>
 
@@ -172,6 +180,7 @@
             <TextView
                 android:id="@+id/Tvtotalprice"
                 android:layout_width="match_parent"
+                android:textColor="#ffff"
                 android:layout_height="47dp" />
 
             <LinearLayout
@@ -184,6 +193,7 @@
             <TextView
                 android:id="@+id/TVchange"
                 android:layout_width="match_parent"
+                android:textColor="#ffff"
                 android:layout_height="45dp" />
 
             <LinearLayout
@@ -195,6 +205,7 @@
 
             <TextView
                 android:id="@+id/TVmoneypeid"
+                android:textColor="#ffff"
                 android:layout_width="match_parent"
                 android:layout_height="46dp" />
 
@@ -221,6 +232,7 @@
                 android:background="@drawable/edittext_rouns"
                 android:ems="10"
                 android:hint="Money peid :"
+                android:padding="10dp"
                 android:inputType="number"
                 android:visibility="invisible" />
 
