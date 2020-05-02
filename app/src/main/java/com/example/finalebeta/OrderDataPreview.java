@@ -49,16 +49,13 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     ArrayList<UserOrder> ArrUO;
     ArrayList<UserOrder>UO;
     String dish;
-    float price,priceTMP;
-    int i = 0;
-    String NameID,k;
-    String Sprice;
+    float price;
+    String NameID;
     DishPrice dp;
     String Ssum,Smp,Schange;
     int j;
     Evnts dataTMP1;
     String EVid;
-    int flag = 1;
     User Useruid;
     String userUID,fb;
     int pos;
@@ -88,7 +85,6 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         TVchange = (TextView) findViewById(R.id.TVchange);
         TVmoneypeid = (TextView) findViewById(R.id.TVmoneypeid);
         lv3 = (ListView) findViewById(R.id.lv3);
-        //lv3.setOnItemClickListener (this);
         lv3.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         ARRDP = new ArrayList<DishPrice>();
         Ast = new ArrayList<String>();
@@ -188,6 +184,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         EditName.setHint("Order name :");
 
     }
+
     public void ApplyName (View view) {
 
         name = EditName.getText().toString();     //
@@ -203,6 +200,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         }
 
     }
+
     public void cancelName (View view) {
 
         EditName.setVisibility(View.INVISIBLE);          //ביטול אופציית עריכת שם
@@ -282,6 +280,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         btncancelMP.setVisibility(View.VISIBLE);        //אפשרות לעריכת סכום לתשלום
         ETmoney.setHint("Money peid :");
     }
+
     public void ApplyMoney (View view) {
 
         if (!TextUtils.isEmpty(ETmoney.getText().toString())) {

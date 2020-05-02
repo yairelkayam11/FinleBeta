@@ -43,7 +43,6 @@ public class CreateEvent extends AppCompatActivity {
     Long IDD;
    public static Long t;
    boolean Active = true;
-    ArrayList<UserOrder> ArrUO;
 
 
 

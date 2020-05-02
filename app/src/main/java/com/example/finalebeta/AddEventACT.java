@@ -77,7 +77,6 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
                 Evnts dataTMP1 = data.getValue(Evnts.class);
                 Values.add(dataTMP1);
                 IDlist.add(dataTMP1.getName());
-                // dataa = dataTMP1;
             }
 
 

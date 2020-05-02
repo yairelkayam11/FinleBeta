@@ -46,29 +46,23 @@ import static java.util.Objects.*;
 public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     EditText et3,et2,ETname,et14;
-    TextView tv,tv18,tv17;
+    TextView tv18,tv17;
     Button btn;
-    String st1;
     String dish;
     float price;
     String namee ;
     ListView lv;
-    UserOrder uo;
     ArrayList<DishPrice> ArrDP;
     ArrayAdapter<String>adp;
     ArrayList<String>arrST;
-    String place, Epass,time,date,name;
-    Long IDD;
-    boolean Active;
     Double sum=0.0;
     String Ssum;
     int FriendsSum = 0;
     ArrayList<UserOrder> ArrUO;
     Double MoneyP;
     Double change;
-    String STRMoneyP,Schange,g;
+    String STRMoneyP,Schange;
     Evnts dataTMP;
-    User datUsers;
     String Useruid;
 
 

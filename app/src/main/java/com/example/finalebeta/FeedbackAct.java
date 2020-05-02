@@ -62,8 +62,7 @@ public class FeedbackAct extends AppCompatActivity {
     int Gallery=1;
     ArrayList<DishPrice> ARRDP;
     Evnts dataTMP1;
-    int j;
-    String userUID,NameID;
+    String userUID;
     User Useruid;
     ArrayList<UserOrder>UO;
     String name;
@@ -71,7 +70,6 @@ public class FeedbackAct extends AppCompatActivity {
     int pos;
     String EVid;
     String FB,UID;
-    ImageView iV;
     String PlaceName;
     FirebaseStorage storage;
     StorageReference storageReference;

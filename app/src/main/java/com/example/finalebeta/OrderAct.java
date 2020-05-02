@@ -43,13 +43,12 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     int i = 0;
     UserOrder dataa;
     String dataaName;
-    Long pos,pos2;
+    Long pos;
     Evnts dataTMP;
-    User Useruid;
     String userUID,SavedUID;
     double tip;
     double allprice;
-  //  UserOrder yair;
+
 
 
 

@@ -55,7 +55,6 @@ public class ShowFeedback extends AppCompatActivity {
 
 
 
-   // Uri filePath;
     StorageReference mStorageRef;
     public static StorageReference Ref;
 
