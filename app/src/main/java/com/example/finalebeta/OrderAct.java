@@ -101,18 +101,18 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
                         Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();//אם עדיין לאנפצחו הזמנות באותו אירוע זה כותה שאין הזמנות עדיין
                     }
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
-                        for (int k =0; k < dataTMP.getArrUO().get(j).getArrDP().size();k++) {
 
-                            allprice = allprice + (dataTMP.getArrUO().get(j).getArrDP().get(k).getPrice());  // מכניסה לתוך רשימה מטיפוס UserOrder את כל המידע של הזמנות שנקראו ומציגה את שם המסועד ברשימה + סכימת כל התשלום של ההזמנה הכוללת
+                        if (dataTMP.getArrUO().get(j)==null) {
+
+
 
                         }
+
                         Ast.add("The order of : " + dataTMP.getArrUO().get(j).getName());
                         UO.add(dataTMP.getArrUO().get(j));
 
                     }
 
-                    tip = allprice*0.12;  // פעולה לחישוב טיפ שנהוג לתת
-                    TVtip.setText("Tip :"+ tip);
 
 
                 }

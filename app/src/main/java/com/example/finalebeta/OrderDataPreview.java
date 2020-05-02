@@ -35,7 +35,7 @@ import static com.example.finalebeta.FBref.refEvnts;
 
 public class OrderDataPreview extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7,btnCancelName,btncancelDish,btncancelMP;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7,btn11,btnCancelName,btncancelDish,btncancelMP;
     ListView lv3;
     EditText EditName, ETdish, ETprice, ETmoney;
     TextView tv2, Tvtotalprice, TVchange, TVmoneypeid;
@@ -73,6 +73,7 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         btn5 = (Button) findViewById(R.id.btn5);
         btn6 = (Button) findViewById(R.id.btn6);
         btn7 = (Button) findViewById(R.id.btn7);
+        btn11 = (Button) findViewById(R.id.btn11);
         btncancelDish = (Button) findViewById(R.id.btncancelDish);
         btnCancelName = (Button) findViewById(R.id.btnCancelName);
         btncancelMP = (Button) findViewById(R.id.btncancelMP);
@@ -314,13 +315,15 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-        sum = sum - (dataTMP1.getArrUO().get(pos).getArrDP().get(position).getPrice());
+
 
         adb=new AlertDialog.Builder(this);
         adb.setMessage("Do you want to delete this dish?");
         adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {                //בלחיצה על איבר ברשימת המנות נפתחת אםשרות להסיר מנה ואחרי זה עדכון התשום
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                sum = sum - (dataTMP1.getArrUO().get(pos).getArrDP().get(position).getPrice());
 
                 Tvtotalprice.setText("Total price :"+sum);
                 TVchange.setText("Change :"+(MoneyP-sum));
@@ -371,7 +374,40 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();                  //כפתור למחיקת הזמנה
+
+
+
+                //כפתור למחיקת הזמנה
+
+                UO = dataTMP1.getArrUO();
+                int size = dataTMP1.getArrUO().size();
+
+                for (int p = j+1 ; p < size ; p++) {
+
+                    storage = UO.get(p).isStorage();
+                    name = UO.get(p).getName();
+                    MoneyP = UO.get(p).getMoneyPEID();
+                    change = UO.get(p).getChange();
+                    sum = UO.get(p).getTotalprice();
+                    ARRDP = UO.get(p).getArrDP();
+                    Rate = UO.get(p).getRate();
+                    fb = UO.get(p).getFeedback();
+
+                    UserOrder userOrder = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,fb,Rate,storage);
+
+                    refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).setValue(userOrder);
+
+                    refEvnts.child(EVid).child("arrUO").child(String.valueOf(p)).removeValue();
+
+                    j++;
+
+
+                }
+
+                if (j==size-1) {
+                    refEvnts.child(EVid).child("arrUO").child(String.valueOf(j)).removeValue();
+                }
+
 
                 Intent t = new Intent(OrderDataPreview.this,OrderAct.class);
                 startActivity(t);
