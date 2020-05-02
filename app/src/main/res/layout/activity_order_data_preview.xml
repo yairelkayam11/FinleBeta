@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/beckground2"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -32,6 +33,8 @@
         android:id="@+id/btn1"
         android:layout_width="143dp"
         android:layout_height="wrap_content"
+        android:textColor="#ffff"
+        android:background="@drawable/button2_rouns"
         android:layout_gravity="center"
         android:onClick="EditName"
         android:text="edit name" />
@@ -53,17 +56,21 @@
             android:id="@+id/btnCancelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:textColor="#ffff"
+            android:background="@drawable/button2_rouns"
             android:layout_weight="1"
             android:onClick="cancelName"
-            android:text="cancel" />
+            android:text="cancel"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/btn6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#ffff"
             android:layout_weight="1"
             android:onClick="ApplyName"
+            android:background="@drawable/button2_rouns"
             android:visibility="invisible"
             android:text="apply" />
 
@@ -72,6 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_weight="1"
+            android:background="@drawable/edittext_rouns"
             android:ems="10"
             android:inputType="textPersonName"
             android:visibility="invisible" />
@@ -88,6 +96,8 @@
         android:layout_width="156dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textColor="#ffff"
+        android:background="@drawable/button2_rouns"
         android:onClick="EditOrder"
         android:text="edit order" />
 
@@ -123,20 +133,22 @@
         <EditText
             android:id="@+id/ETprice"
             android:layout_width="83dp"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
             android:layout_weight="1"
-            android:visibility="invisible"
+            android:background="@drawable/edittext_rouns"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/ETdish"
             android:layout_width="95dp"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
             android:layout_weight="1"
+            android:background="@drawable/edittext_rouns"
             android:ems="10"
-            android:visibility="invisible"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <LinearLayout
@@ -197,31 +209,38 @@
                 android:id="@+id/btn11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#ffff"
+                android:background="@drawable/button2_rouns"
                 android:onClick="MPedit"
                 android:text="edit" />
 
             <EditText
                 android:id="@+id/ETmoney"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
+                android:background="@drawable/edittext_rouns"
                 android:ems="10"
                 android:hint="Money peid :"
-                android:visibility="invisible"
-                android:inputType="number" />
+                android:inputType="number"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/btn7"
                 android:layout_width="wrap_content"
                 android:visibility="invisible"
+                android:textColor="#ffff"
                 android:onClick="ApplyMoney"
+                android:background="@drawable/button2_rouns"
                 android:layout_height="37dp"
                 android:text="apply" />
 
             <Button
                 android:id="@+id/btncancelMP"
                 android:visibility="invisible"
+                android:background="@drawable/button2_rouns"
                 android:layout_width="wrap_content"
                 android:onClick="cancelMP"
+                android:textColor="#ffff"
                 android:layout_height="wrap_content"
                 android:text="cancel" />
         </LinearLayout>
@@ -245,7 +264,9 @@
             android:id="@+id/btn4"
             android:layout_width="wrap_content"
             android:layout_height="59dp"
+            android:textColor="#ffff"
             android:layout_weight="1"
+            android:background="@drawable/button2_rouns"
             android:onClick="back"
             android:text="save and back" />
 
@@ -258,10 +279,12 @@
 
         <Button
             android:id="@+id/btn5"
+            android:background="@drawable/button2_rouns"
             android:layout_width="wrap_content"
             android:layout_height="59dp"
             android:layout_weight="1"
             android:onClick="DeletOrder"
+            android:textColor="#ffff"
             android:text="delete order" />
     </LinearLayout>
 </LinearLayout>

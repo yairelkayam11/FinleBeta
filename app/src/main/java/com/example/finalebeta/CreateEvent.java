@@ -61,6 +61,12 @@ public class CreateEvent extends AppCompatActivity {
         ETname = (EditText) findViewById(R.id.ETname);
 
 
+        /**
+         *
+         *  Method for DatePicker that open Calendar
+         */
+
+
         DateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +90,11 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
+        /**
+         *
+         *  Method for TimePicker that open Clock
+         */
+
         TimeBtn.setOnClickListener(new View.OnClickListener() {  //טייםפיקר יוצרת שעון שבו בוחרים שעה
             @Override
             public void onClick(View view) {
@@ -105,6 +116,11 @@ public class CreateEvent extends AppCompatActivity {
             }
         });
 
+        /**
+         *
+         * this method read data from firebase and count the amount of childrens for make ID
+         */
+
         ValueEventListener listener = new ValueEventListener() // פעולה שקוראת מידע מהפיירבייס וסוכמת את מספר הילדים לשימוש של יצירת ID לכל אירוע
         {
 
@@ -124,6 +140,12 @@ public class CreateEvent extends AppCompatActivity {
         refEvnts.addValueEventListener(listener);
     }
 
+    /**
+     *
+     * saveing the event details
+     * @param view
+     */
+
 
     public void CreateEV (View view) {
 
@@ -139,6 +161,10 @@ public class CreateEvent extends AppCompatActivity {
         if (time.isEmpty()) Toast.makeText(CreateEvent.this, "you must enter a time ", Toast.LENGTH_SHORT).show();
         IDD = count;
         t = IDD;
+
+        /**
+         * pushing event data to firebase
+         */
 
 
         if(!place.isEmpty()&&!Epass.isEmpty()&&!name.isEmpty()&&!date.isEmpty()&&!time.isEmpty()) {    //דיחפת כל הנתונים שהזינו בשדות יצרית עצם בדאטאבייס

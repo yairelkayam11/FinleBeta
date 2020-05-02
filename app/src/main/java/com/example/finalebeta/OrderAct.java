@@ -70,7 +70,10 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
 
-
+/**
+ *
+ * this method filter out only the event with the same ID of the event that chose
+ */
 
 
 
@@ -91,6 +94,10 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
                 for (DataSnapshot data : ds.getChildren()) {
                     dataTMP = data.getValue(Evnts.class);
 
+                    /**
+                     * the method read from database the UID of the current user
+                     */
+
 
                     FirebaseUser user = refAuth.getCurrentUser();  //קיראה מהדאטאבייס ומכניסה למשתמש את הUID של המשתמש שיצר הזמנה
                     userUID = user.getUid();
@@ -100,19 +107,24 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
 
                         Toast.makeText(OrderAct.this, "There are no existing orders yet", Toast.LENGTH_SHORT).show();//אם עדיין לאנפצחו הזמנות באותו אירוע זה כותה שאין הזמנות עדיין
                     }
+
+                    /**
+                     *
+                     * this method sum the whole price of all the diners and make tip
+                     */
                     for (int j = 0;j < dataTMP.getArrUO().size() ; j++ ) {
 
-                        if (dataTMP.getArrUO().get(j)==null) {
+                        for(int t = 0 ; t<dataTMP.getArrUO().get(j).getArrDP().size() ;t++) {
 
-
-
+                            allprice = allprice + (dataTMP.getArrUO().get(j).getArrDP().get(t).getPrice());
                         }
 
                         Ast.add("The order of : " + dataTMP.getArrUO().get(j).getName());
                         UO.add(dataTMP.getArrUO().get(j));
 
                     }
-
+                    tip = allprice * 0.12;
+                    TVtip.setText("Tip : " + tip);
 
 
                 }
@@ -130,6 +142,11 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     };
 
     public void AddDiner (View view) {
+
+        /**
+         *
+         * Method to pass between activities
+         */
 
 
         Intent t = new Intent(this,DinerOrderAct.class);  //פעולת כפתור שמעבירה למסך שבו יוצרים הזמנה
@@ -176,14 +193,25 @@ public class OrderAct extends AppCompatActivity implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
 
+        /**
+         *
+         * when click on order in the listview you pass to editorder activity but this option its only for the user that opened this order
+         * by compareing the current uid to the uid of the user that opened
+         */
 
-            SavedUID = dataTMP.getArrUO().get(position).getUseruid();
+
+        SavedUID = dataTMP.getArrUO().get(position).getUseruid();
 
 
             if (SavedUID.equals(userUID)) {
 
                 dataa = UO.get(position);                                          // כאשר לוחצים על הזמנה שנפתחה יש אפשרות רק לאותו user שפתח אותה לעבור למסך עריכת הזמנה
                 dataaName = dataa.getName();
+
+                /**
+                 *
+                 * passing data , pass the name of the diner and the position of the order to read the order details of this position
+                 */
 
 
                 Intent t = new Intent(this,OrderDataPreview.class);  // שלחית נתונים של שם סועד ומיקומו ברשימה

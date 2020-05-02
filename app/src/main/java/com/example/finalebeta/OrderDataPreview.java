@@ -99,6 +99,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         lv3.setOnItemClickListener(this);
         lv3.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        /**
+         * save the diner name and the position of the order that checked in last activity to open the details of this order in edit act
+         * filter out the event that checked
+         */
+
 
 
         NameID = getIntent().getExtras().getString("key");
@@ -118,6 +123,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
 
     com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
+
+        /**
+         * read from database the details of the order of the order of the name
+         * @param ds
+         */
 
 
         @Override
@@ -186,6 +196,12 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     }
 
+    /**
+     *
+     * save the new name
+     * @param view
+     */
+
     public void ApplyName (View view) {
 
         name = EditName.getText().toString();     //
@@ -219,6 +235,11 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         ETdish.setHint("food name :");
         ETprice.setHint("price :");
     }
+
+    /**
+     * add the dish and price to the dish list
+     * @param view
+     */
 
     public void add (View view) {
 
@@ -312,6 +333,14 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     }
 
+    /**
+     *
+     * by click on item from the dish list you can remove him
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
@@ -352,6 +381,12 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
 
     }
 
+    /**
+     *
+     * save all the changes of the order and pushing them to firebase
+     * @param view
+     */
+
     public void back (View view) {
 
         UserOrder uo = new UserOrder(name,ARRDP,sum,change,MoneyP,userUID,fb,Rate,storage);
@@ -364,6 +399,12 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         startActivity(t);
     }
 
+    /**
+     *
+     * when you push this button apper dialog the can delete the whole order from database
+     * @param view
+     */
+
     public void DeletOrder (View view) {
 
 
@@ -373,8 +414,6 @@ public class OrderDataPreview extends AppCompatActivity implements AdapterView.O
         adb.setPositiveButton("yes", new DialogInterface.OnClickListener() {                //בלחיצה על איבר ברשימת המנות נפתחת אםשרות להסיר מנה ואחרי זה עדכון התשום
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-
 
 
                 //כפתור למחיקת הזמנה

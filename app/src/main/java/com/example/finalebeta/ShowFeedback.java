@@ -73,6 +73,10 @@ public class ShowFeedback extends AppCompatActivity {
 
         mStorageRef = FirebaseStorage.getInstance().getReference();  // משתנה שמכיל את כל ההרשאות דל סטורג
 
+        /**
+         * this is liseners for the button that can pass between the photos
+         */
+
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +108,11 @@ public class ShowFeedback extends AppCompatActivity {
 
     }
 
+    /**
+     * when you write the name of the place to check the review about him the method filter out the rate and the review only of the event that his place is the same
+     * @param view
+     */
+
     public void Search (View view) {
 
         place = editText.getText().toString();
@@ -119,6 +128,14 @@ public class ShowFeedback extends AppCompatActivity {
         TV.setText("");
 
     }
+
+    /**
+     *
+     * read from database only the rate and the review about this place
+     * this method counter the raters and the total rate about this place
+     * add to array list all the review about this place
+     * calculate the average rate
+     */
 
     com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
         @Override
@@ -175,6 +192,10 @@ public class ShowFeedback extends AppCompatActivity {
 
         }
     };
+
+    /**
+     * this method read from firebase storage from the folder of the place the photos and show them in imageview
+     */
 
     private void downloadimg() {
         plus.setVisibility(View.VISIBLE);

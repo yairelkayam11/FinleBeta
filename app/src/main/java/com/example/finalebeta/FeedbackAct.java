@@ -141,6 +141,11 @@ public class FeedbackAct extends AppCompatActivity {
 
     }
 
+    /**
+     * read all the order details for update the new details later
+     *
+     */
+
     com.google.firebase.database.ValueEventListener vel = new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot ds) {
@@ -170,9 +175,11 @@ public class FeedbackAct extends AppCompatActivity {
     };
 
 
-
-
-
+    /**
+     *
+     * the method set the review that write in the edittext in the textview
+     * @param view
+     */
 
 
         public void Send (View view) {
@@ -183,6 +190,10 @@ public class FeedbackAct extends AppCompatActivity {
 
         FBet.setText("");
     }
+
+    /**
+     * this button open the gallery for choosing photo
+     */
 
     private void choosepic () {
 
@@ -204,7 +215,6 @@ public class FeedbackAct extends AppCompatActivity {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-            //    iV.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -213,6 +223,12 @@ public class FeedbackAct extends AppCompatActivity {
 
     }
 
+
+    /**
+     *
+     * this method uploading the photos that chose to firebase storage in folder of the event place name
+     * @throws IOException
+     */
 
 
     private void upload() throws IOException {
@@ -248,9 +264,17 @@ public class FeedbackAct extends AppCompatActivity {
 
 
 
+
+
         }
 
-        public void save (View view) {          //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
+    /**
+     *
+     * this method write and update firebase with the new varibale , rate and review
+     * @param view
+     */
+
+    public void save (View view) {          //לפי בחירת הדירוג על ידי רדיו בטן rate מקבל את הערך הנבחר
 
             if (rb1.isChecked()) rate = 1;
             if (rb2.isChecked()) rate = 2;

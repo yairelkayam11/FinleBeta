@@ -53,9 +53,19 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         lv.setOnItemClickListener(this);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
+        /**
+
+         * Method give today date
+         *
+         */
+
         Calendar calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(calendar.getTime()); //פעוולה שמביאה את התאריך של היום
         currentDate = currentDate.replace('.','/');
+
+        /**
+         * Method filter out only the event with today date
+         */
 
         Query query =  refEvnts.orderByChild("date").equalTo(currentDate);      // סינון אירועים שמופיעים לפי התאריך של אותו יום
         query.addListenerForSingleValueEvent(listener);
@@ -107,6 +117,14 @@ public class AddEventACT extends AppCompatActivity implements AdapterView.OnItem
         startActivity(t);
 
     }
+
+    /**
+     * when you click on open event appears AlertDialog to insert event password
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {  //פעולה שכאשר לוחצים על איבר/אירוע ברשימה נפתח אלרטדיאלוג שדורש להזין סיסמה יחודית לאותו אירוע

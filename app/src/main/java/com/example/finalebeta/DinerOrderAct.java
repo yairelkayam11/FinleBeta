@@ -116,9 +116,10 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
             if (ds.exists()) {
                 for (DataSnapshot data : ds.getChildren()) {
                     dataTMP = data.getValue(Evnts.class);
-                    //datUsers = data.getValue(User.class);
 
-                    //Useruid = datUsers.getUid();
+                    /**
+                     * read from database the UID of th euser that open this order
+                     */
 
                     FirebaseUser user = refAuth.getCurrentUser();  //שמירת הUID של הuser הנוכחי
                     Useruid = user.getUid();
@@ -135,6 +136,12 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
         }
     };
 
+    /**
+     *
+     * this button save the name of the diner in variable
+     * @param view
+     */
+
 
     public void apply (View view) {
 
@@ -149,7 +156,12 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
-
+    /**
+     *
+     * save the price and dish name in varibales and pushing to arraylist and sum the total price
+     * presrnt the dish in listview
+     * @param v
+     */
 
             public void AddDishPrice(View v) {
 
@@ -191,6 +203,12 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
                 }
 
             }
+
+    /**
+     *
+     * calculate the change and the total price and write to database the order details
+     * @param view
+     */
 
 
     public void finish (View view) {
@@ -248,6 +266,14 @@ public class DinerOrderAct extends AppCompatActivity implements AdapterView.OnIt
 
     }
 
+    /**
+     *
+     * when you click on the dish list apear dialog that remove the dish from the list
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
